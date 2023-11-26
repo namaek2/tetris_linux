@@ -1,0 +1,21 @@
+# ninja log v5
+1	221	1701000712753502752	CMakeFiles/tetris.dir/src/main.cpp.o	d6a7048fe203be0c
+328	400	1701002394933664563	tetris	f14d047af9fffbef
+0	31	1700628143513735301	CMakeFiles/tetris.dir/src/TetrisBlock.cpp.o	9db19c9f5b3acf4b
+0	328	1701002394860331223	CMakeFiles/tetris.dir/src/TetrisStart.cpp.o	5305a24b290b26ac
+0	58	1701000020600102840	CMakeFiles/tetris.dir/src/TetrisInput.cpp.o	29d82b6adf667c2
+0	332	1701002442727002492	CMakeFiles/tetris.dir/src/TetrisStart.cpp.o	5305a24b290b26ac
+332	409	1701002442807002500	tetris	f14d047af9fffbef
+1	224	1701002527830344013	CMakeFiles/tetris.dir/src/main.cpp.o	d6a7048fe203be0c
+224	279	1701002527883677351	tetris	f14d047af9fffbef
+1	233	1701002543480345518	CMakeFiles/tetris.dir/src/main.cpp.o	d6a7048fe203be0c
+233	290	1701002543537012190	tetris	f14d047af9fffbef
+0	229	1701002613140352220	CMakeFiles/tetris.dir/src/main.cpp.o	d6a7048fe203be0c
+0	292	1701002613200352225	CMakeFiles/tetris.dir/src/TetrisStart.cpp.o	5305a24b290b26ac
+292	342	1701002613250352230	tetris	f14d047af9fffbef
+0	349	1701002730063696800	CMakeFiles/tetris.dir/src/TetrisStart.cpp.o	5305a24b290b26ac
+349	400	1701002730113696805	tetris	f14d047af9fffbef
+1	308	1701002762490366586	CMakeFiles/tetris.dir/src/TetrisStart.cpp.o	5305a24b290b26ac
+308	393	1701002762573699927	tetris	f14d047af9fffbef
+1	345	1701002857117042353	CMakeFiles/tetris.dir/src/TetrisStart.cpp.o	5305a24b290b26ac
+345	400	1701002857170375692	tetris	f14d047af9fffbef
