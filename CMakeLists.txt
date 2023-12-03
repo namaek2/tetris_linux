@@ -3,19 +3,16 @@ project(tetris)
 
 set(CMAKE_CXX_STANDARD 14)
 
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
-
 
 add_executable(tetris
-        include/TetrisTerminal.h
-        src/TetrisInput.cpp
-        include/TetrisBlock.h
-        src/TetrisBlock.cpp
-        src/TetrisStart.cpp
         include/TetrisColor.h
+        src/TetrisInput.cpp
+        src/TetrisGame.cpp
+
         src/main.cpp
+        src/TetrisStart.cpp
+        src/TetrisInterface.cpp
+        src/TetrisBlock.cpp
+
+
 )
-
-
-target_link_libraries(tetris ${CURSES_LIBRARIES})

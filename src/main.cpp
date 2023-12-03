@@ -1,12 +1,14 @@
-#include "../include/TetrisStart.h"
+#include "../include/TetrisGame.h"
 
 int main(void) {
 
-  TetrisStart t;
-  TetrisInput kb;
-  // t.SelectMenu();
-  // while (!kb._kbhit())
-  //  kb._getch();
+  // TetrisStart tetris_start;
+  // tetris_start.~TetrisStart();
+  TetrisGame tetris_game;
+  tetris_game.~TetrisGame();
+  //  TetrisGame::GameOver();
+  while (!TetrisInput::_kbhit())
+    TetrisInput::_getch();
 
   return 0;
 }

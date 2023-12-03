@@ -2,32 +2,23 @@
 // Created by namaek_2 on 11/21/23.
 //
 
-#include "../include/TetrisStart.h"
+#include "../include/TetrisGame.h"
 
 #define ENTER 13
 #define ARROW '\033'
 #define UP 65
 #define DOWN 66
 
-Color::Modifier RED(Color::FG_RED);
-Color::Modifier MAGENTA(Color::FG_MAGENTA);
-Color::Modifier YELLOW(Color::FG_YELLOW);
-Color::Modifier BLUE(Color::FG_BLUE);
-Color::Modifier CYAN(Color::FG_CYAN);
-Color::Modifier GREEN(Color::FG_GREEN);
-Color::Modifier WHITE(Color::FG_WHITE);
-
-TetrisInput kb;
-
 TetrisStart::TetrisStart() {
+
   system("clear");
-  initscr();
   hide();
   PrintTitle();
   PrintMenu();
   SelectMenu();
-  endwin();
 }
+
+TetrisStart::~TetrisStart() { delete this; }
 
 int TetrisStart::GetEnum(int level_type) {
   if (level_type == BEGINNER) {
@@ -59,27 +50,27 @@ void TetrisStart::PrintTitle() {
   PrintS(109, 6);
   cout << WHITE;
 
-  kb.gotoxy(42, 36);
+  TetrisInput::gotoxy(42, 36);
   cout << "회전 : S, D, 방향키 상 / 이동 : 방향키 좌, 우 ,하 / 하드드랍 : "
           "스페이스 바";
-  kb.gotoxy(70, 40);
-  cout << "made by namaek";
+  TetrisInput::gotoxy(69, 40);
+  cout << "made by namaek_2";
 }
 
 void TetrisStart::PrintMenu() {
-  kb.gotoxy(74, 20);
+  TetrisInput::gotoxy(74, 20);
   GetEnum(BEGINNER);
-  kb.gotoxy(74, 22);
+  TetrisInput::gotoxy(74, 22);
   GetEnum(AMATEUR);
-  kb.gotoxy(74, 24);
+  TetrisInput::gotoxy(74, 24);
   GetEnum(EXPERT);
-  kb.gotoxy(74, 26);
+  TetrisInput::gotoxy(74, 26);
   GetEnum(EXIT);
-  kb.gotoxy(71, 20);
+  TetrisInput::gotoxy(71, 20);
   cout << ">>\n";
 }
 
-int TetrisStart::SelectMenu() {
+void TetrisStart::SelectMenu() {
   int num = 0;
   while (true) {
     for (int i = 0; i < 100; i++) {
@@ -87,31 +78,31 @@ int TetrisStart::SelectMenu() {
       if (temp == 0) {
         continue;
       }
-      return temp;
+      return;
     }
     if (num == 0) {
-      kb.gotoxy(71, GetCursorY());
-      printf(">>");
+      TetrisInput::gotoxy(71, GetCursorY());
+      cout << ">>";
       num = 1;
     }
 
     else {
-      kb.gotoxy(71, GetCursorY());
-      printf("  ");
+      TetrisInput::gotoxy(71, GetCursorY());
+      cout << "  ";
       num = 0;
     }
   }
 }
 
 int TetrisStart::Session() {
-  if (kb._kbhit()) {
-    int input = kb._getch();
+  if (TetrisInput::_kbhit()) {
+    int input = TetrisInput::_getch();
 
     switch (input) {
     case ENTER:
       return MenuSelected(GetCursorY());
     case ARROW:
-      input = kb._getch();
+      input = TetrisInput::_getch();
       CursorMove(input, GetCursorY());
     }
   }
@@ -125,9 +116,9 @@ void TetrisStart::CursorMove(int dirrection, int y) {
   if (dirrection != 91) {
     return;
   }
-  dirrection = kb._getch();
-  kb.gotoxy(71, y);
-  printf("  ");
+  dirrection = TetrisInput::_getch();
+  TetrisInput::gotoxy(71, y);
+  cout << "  ";
 
   if (dirrection == UP) {
     if (y != 20) {
@@ -147,107 +138,112 @@ void TetrisStart::CursorMove(int dirrection, int y) {
 // 선택시 반짝거림
 int TetrisStart::MenuSelected(int y) {
   for (int i = 0; i < 5; i++) {
-    kb.gotoxy(74, y);
-    printf("        ");
+    TetrisInput::gotoxy(74, y);
+    cout << "        ";
     usleep(100000);
-    kb.gotoxy(74, y);
+    TetrisInput::gotoxy(74, y);
     GetEnum(y);
     usleep(100000);
   }
 
-  return GetEnum(y);
+  SetMenuSelected(GetEnum(y));
+  return GetMenuSelected();
 }
 
 void TetrisStart::PrintT(int x, int y) // T 출력
 {
-  kb.gotoxy(x, y);
+  TetrisInput::gotoxy(x, y);
   cout << "▣▣▣▣▣▣▣▣";
-  kb.gotoxy(x, y + 1);
+  TetrisInput::gotoxy(x, y + 1);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 2);
+  TetrisInput::gotoxy(x, y + 2);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 3);
+  TetrisInput::gotoxy(x, y + 3);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 4);
+  TetrisInput::gotoxy(x, y + 4);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 5);
+  TetrisInput::gotoxy(x, y + 5);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 6);
+  TetrisInput::gotoxy(x, y + 6);
   cout << "   ▣▣   ";
 }
 
 void TetrisStart::PrintE(int x, int y) // E 출력
 {
-  kb.gotoxy(x, y);
+  TetrisInput::gotoxy(x, y);
   cout << "▣▣▣▣▣▣▣▣";
-  kb.gotoxy(x, y + 1);
+  TetrisInput::gotoxy(x, y + 1);
   cout << "▣▣      ";
-  kb.gotoxy(x, y + 2);
+  TetrisInput::gotoxy(x, y + 2);
   cout << "▣▣      ";
-  kb.gotoxy(x, y + 3);
+  TetrisInput::gotoxy(x, y + 3);
   cout << "▣▣▣▣▣▣  ";
-  kb.gotoxy(x, y + 4);
+  TetrisInput::gotoxy(x, y + 4);
   cout << "▣▣      ";
-  kb.gotoxy(x, y + 5);
+  TetrisInput::gotoxy(x, y + 5);
   cout << "▣▣      ";
-  kb.gotoxy(x, y + 6);
+  TetrisInput::gotoxy(x, y + 6);
   cout << "▣▣▣▣▣▣▣▣";
 }
 
 void TetrisStart::PrintR(int x, int y) // R 출력
 {
-  kb.gotoxy(x, y);
+  TetrisInput::gotoxy(x, y);
   cout << "▣▣▣▣▣▣▣ ";
-  kb.gotoxy(x, y + 1);
+  TetrisInput::gotoxy(x, y + 1);
   cout << "▣▣    ▣▣";
-  kb.gotoxy(x, y + 2);
+  TetrisInput::gotoxy(x, y + 2);
   cout << "▣▣    ▣▣";
-  kb.gotoxy(x, y + 3);
+  TetrisInput::gotoxy(x, y + 3);
   cout << "▣▣▣▣▣▣▣ ";
-  kb.gotoxy(x, y + 4);
+  TetrisInput::gotoxy(x, y + 4);
   cout << "▣▣    ▣▣";
-  kb.gotoxy(x, y + 5);
+  TetrisInput::gotoxy(x, y + 5);
   cout << "▣▣    ▣▣";
-  kb.gotoxy(x, y + 6);
+  TetrisInput::gotoxy(x, y + 6);
   cout << "▣▣    ▣▣";
 }
 
 void TetrisStart::PrintI(int x, int y) // I 출력
 {
-  kb.gotoxy(x, y);
+  TetrisInput::gotoxy(x, y);
   cout << "▣▣▣▣▣▣▣▣";
-  kb.gotoxy(x, y + 1);
+  TetrisInput::gotoxy(x, y + 1);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 2);
+  TetrisInput::gotoxy(x, y + 2);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 3);
+  TetrisInput::gotoxy(x, y + 3);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 4);
+  TetrisInput::gotoxy(x, y + 4);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 5);
+  TetrisInput::gotoxy(x, y + 5);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 6);
+  TetrisInput::gotoxy(x, y + 6);
   cout << "▣▣▣▣▣▣▣▣";
 }
 
 void TetrisStart::PrintS(int x, int y) // S 출력
 {
-  kb.gotoxy(x, y);
+  TetrisInput::gotoxy(x, y);
   cout << " ▣▣▣▣▣▣▣";
-  kb.gotoxy(x, y + 1);
+  TetrisInput::gotoxy(x, y + 1);
   cout << "▣▣      ";
-  kb.gotoxy(x, y + 2);
+  TetrisInput::gotoxy(x, y + 2);
   cout << " ▣▣▣    ";
-  kb.gotoxy(x, y + 3);
+  TetrisInput::gotoxy(x, y + 3);
   cout << "   ▣▣   ";
-  kb.gotoxy(x, y + 4);
+  TetrisInput::gotoxy(x, y + 4);
   cout << "    ▣▣▣ ";
-  kb.gotoxy(x, y + 5);
+  TetrisInput::gotoxy(x, y + 5);
   cout << "      ▣▣";
-  kb.gotoxy(x, y + 6);
+  TetrisInput::gotoxy(x, y + 6);
   cout << "▣▣▣▣▣▣▣ ";
 }
 
-int TetrisStart::GetCursorY() { return cursor_y; }
+int TetrisStart::GetCursorY() const { return cursor_y; }
 
 void TetrisStart::SetCursorY(int y) { cursor_y = y; }
+
+int TetrisStart::GetMenuSelected() const { return menu_selected; }
+
+void TetrisStart::SetMenuSelected(int m) { menu_selected = m; }

@@ -3,7 +3,7 @@
 //
 
 #include "../include/TetrisInput.h"
-
+/*
 void TetrisInput::init_keyboard() {
   tcgetattr(0, &initial_settings);
   new_settings = initial_settings;
@@ -16,6 +16,13 @@ void TetrisInput::init_keyboard() {
 
 void TetrisInput::close_keyboard() { tcsetattr(0, TCSANOW, &initial_settings); }
 
+int TetrisInput::_putch(int c) {
+  putchar(c);
+  fflush(stdout);
+  return c;
+}
+
+*/
 int TetrisInput::_kbhit() {
   unsigned char ch;
   int nread;
@@ -43,12 +50,6 @@ int TetrisInput::_getch() {
   }
   read(0, &ch, 1);
   return ch;
-}
-
-int TetrisInput::_putch(int c) {
-  putchar(c);
-  fflush(stdout);
-  return c;
 }
 
 void TetrisInput::gotoxy(int x, int y) {
