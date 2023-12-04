@@ -4,6 +4,13 @@
 
 #include "../include/TetrisGame.h"
 
+TetrisBlock::TetrisBlock(){};
+TetrisBlock::~TetrisBlock() { delete this; }
+
+// TetrisBlock TetrisBlock::*Clone() { return new TetrisBlock(*this); }
+
+void TetrisBlock::BlockColor() {}
+
 void TetrisBlock::BlockSet(bool arr[4][4]) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
@@ -11,11 +18,6 @@ void TetrisBlock::BlockSet(bool arr[4][4]) {
     }
   }
 }
-
-TetrisBlock::~TetrisBlock() { delete this; }
-
-void TetrisBlock::BlockColor() {}
-
 void TetrisBlock::BlockPrint(int x, int y) {
   BlockColor();
   for (int i = 0; i < 4; i++) {

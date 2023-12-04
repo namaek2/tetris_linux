@@ -3,15 +3,6 @@
 //
 #include "../include/TetrisGame.h"
 
-#define LEFT_BORDER 10
-#define RIGHT_BORDER 21
-#define TOP_BORDER 10
-#define BOTTOM_BORDER 31
-
-#define QUE_LEFT_BORDER 40
-#define QUE_RIGHT_BORDER 47
-#define QUE_TOP_BORDER 2
-
 void TetrisInterface::ScreenBorder() {
   system("clear");
 
@@ -54,7 +45,7 @@ void TetrisInterface::GameBorder() {
 }
 
 void TetrisInterface::DrawQueBlocks(TetrisBlock **que_blocks) {
-  for (int i = 0; i < QUE_BOX_COUNT; ++i) {
+  for (int i = 0; i < QUE_BLOCK_COUNT; ++i) {
     que_blocks[i]->BlockPrint(QUE_LEFT_BORDER + 2,
                               QUE_TOP_BORDER + 2 + i * (QUE_BOX_SIZE + 1));
   }
@@ -67,7 +58,7 @@ void TetrisInterface::DrawQueBoxBorder() {
   cout << WHITE;
   cout << "◈NE  XT◈";
 
-  for (int i = 1; i <= QUE_BOX_COUNT; i++) {
+  for (int i = 1; i <= QUE_BLOCK_COUNT; i++) {
     TetrisInput::gotoxy(QUE_LEFT_BORDER,
                         QUE_TOP_BORDER + i * (QUE_BOX_SIZE + 1));
     for (int j = 0; j < QUE_BOX_SIZE + 2; j++) {
@@ -75,10 +66,18 @@ void TetrisInterface::DrawQueBoxBorder() {
     }
   }
 
-  for (int i = 0; i < QUE_BOX_SIZE * QUE_BOX_COUNT + QUE_BOX_COUNT; i++) {
+  for (int i = 0; i < QUE_BOX_SIZE * QUE_BLOCK_COUNT + QUE_BLOCK_COUNT; i++) {
     TetrisInput::gotoxy(QUE_LEFT_BORDER, QUE_TOP_BORDER + i);
     cout << "◈";
     TetrisInput::gotoxy(QUE_RIGHT_BORDER, QUE_TOP_BORDER + i);
+    cout << "◈";
+  }
+}
+
+void TetrisInterface::DrawGameTopBar() {
+  TetrisInput::gotoxy(LEFT_BORDER, TOP_BORDER);
+
+  for (int i = 0; i < RIGHT_BORDER - LEFT_BORDER + 1; i++) {
     cout << "◈";
   }
 }
