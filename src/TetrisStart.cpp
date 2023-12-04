@@ -4,11 +4,6 @@
 
 #include "../include/TetrisGame.h"
 
-#define ENTER 13
-#define ARROW '\033'
-#define UP 65
-#define DOWN 66
-
 TetrisStart::TetrisStart() {
   system("clear");
   SetCursorY(20);
@@ -102,12 +97,13 @@ void TetrisStart::Session() {
       MenuSelected(GetCursorY());
       return;
     }
-    case ARROW: {
+    case ARROW_ESC: {
       input = TetrisInput::_getch();
       CursorMove(input, GetCursorY());
     }
     }
   }
+  
   usleep(1000);
 }
 

@@ -138,13 +138,34 @@ void TetrisBlockJ::BlockColor() { cout << BLUE; }
 void TetrisBlockS::BlockColor() { cout << GREEN; }
 void TetrisBlockZ::BlockColor() { cout << RED; }
 
-TetrisBlockI::TetrisBlockI() { SetBlock(default_block); }
-TetrisBlockT::TetrisBlockT() { SetBlock(default_block); }
-TetrisBlockO::TetrisBlockO() { SetBlock(default_block); }
-TetrisBlockL::TetrisBlockL() { SetBlock(default_block); }
-TetrisBlockJ::TetrisBlockJ() { SetBlock(default_block); }
-TetrisBlockS::TetrisBlockS() { SetBlock(default_block); }
-TetrisBlockZ::TetrisBlockZ() { SetBlock(default_block); }
+TetrisBlockI::TetrisBlockI() {
+  SetBlock(default_block);
+  color_code = code;
+}
+TetrisBlockT::TetrisBlockT() {
+  SetBlock(default_block);
+  color_code = code;
+}
+TetrisBlockO::TetrisBlockO() {
+  SetBlock(default_block);
+  color_code = code;
+}
+TetrisBlockL::TetrisBlockL() {
+  SetBlock(default_block);
+  color_code = code;
+}
+TetrisBlockJ::TetrisBlockJ() {
+  SetBlock(default_block);
+  color_code = code;
+}
+TetrisBlockS::TetrisBlockS() {
+  SetBlock(default_block);
+  color_code = code;
+}
+TetrisBlockZ::TetrisBlockZ() {
+  SetBlock(default_block);
+  color_code = code;
+}
 
 TetrisBlockI::~TetrisBlockI() { delete this; }
 TetrisBlockT::~TetrisBlockT() { delete this; }

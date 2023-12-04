@@ -20,6 +20,14 @@
 #define WHITE Color::Modifier(Color::FG_WHITE);
 #define ORANGE Color::Modifier(Color::FG_ORANGE);
 
+#define ENTER 13
+#define SPACE 32
+#define ARROW_ESC 27
+#define UP 65
+#define DOWN 66
+#define LEFT 68
+#define RIGHT 67
+
 #define LEFT_BORDER 10
 #define RIGHT_BORDER 21
 #define TOP_BORDER 10
@@ -79,6 +87,7 @@ class TetrisBlock {
 private:
 public:
   bool block[4][4]{};
+  int color_code;
   bool GetBlock(int y, int x);
   void SetBlock(bool arr[4][4]);
   void BlockPrint(int y, int x);
@@ -99,6 +108,7 @@ private:
                               {true, true, true, true},
                               {false, false, false, false},
                               {false, false, false, false}};
+  int code = 2;
 
 public:
   TetrisBlockI();
@@ -115,6 +125,7 @@ private:
                               {false, true, true, true},
                               {false, false, false, false},
                               {false, false, false, false}};
+  int code = 3;
 
 public:
   TetrisBlockT();
@@ -129,6 +140,7 @@ private:
                               {false, true, true, false},
                               {false, true, true, false},
                               {false, false, false, false}};
+  int code = 4;
 
 public:
   TetrisBlockO();
@@ -145,6 +157,7 @@ private:
                               {false, true, true, true},
                               {false, false, false, false},
                               {false, false, false, false}};
+  int code = 5;
 
 public:
   TetrisBlockL();
@@ -159,6 +172,7 @@ private:
                               {false, true, true, true},
                               {false, false, false, false},
                               {false, false, false, false}};
+  int code = 6;
 
 public:
   TetrisBlockJ();
@@ -173,6 +187,7 @@ private:
                               {false, true, true, false},
                               {false, false, false, false},
                               {false, false, false, false}};
+  int code = 7;
 
 public:
   TetrisBlockS();
@@ -187,6 +202,7 @@ private:
                               {false, false, true, true},
                               {false, false, false, false},
                               {false, false, false, false}};
+  int code = 8;
 
 public:
   TetrisBlockZ();
@@ -209,19 +225,25 @@ public:
 class TetrisGame {
 private:
   int game_level = 0;
+  int score = 0;
   int cur_y = 0;
   int cur_x = 0;
-  bool game_stage[25][12] = {false};
+  int game_stage[25][12] = {0};
   bool used_blocks[7] = {false};
   // unique_ptr<TetrisBlock> block[5];
   TetrisBlock *que_blocks[5];
 
+  clock_t start = NULL;
+  clock_t end = NULL;
+
 public:
   TetrisGame();
   void GameInit();
+
   void InitGameStage();
-  bool GetGameStage(int y, int x);
-  void SetGameStage(int y, int x, bool value);
+  int GetGameStage(int y, int x);
+  void SetGameStage(int y, int x, int value);
+  void DrawGameStage();
   void SetQueBlock(TetrisBlock *&block);
   int SetRandomNum();
   void CheckAllBlockUsed();
@@ -229,10 +251,21 @@ public:
   void GameMain(TetrisBlock *&block);
   void PushQueBlock();
 
-  void BlockMove(TetrisBlock *&block);
+  void FixGameStage(TetrisBlock *&block);
+  void CheckGameStage();
+  void LineCompleted(int line_y);
+  void LineCompletedScore(int combo);
+
+  void KeyBoardInput(TetrisBlock *&block);
+  void ArrowEscInput(TetrisBlock *&block);
+
+  void BlockTurnLeft(TetrisBlock *&block);
+  void BlockTurnRight(TetrisBlock *&block);
+
+  void BlockMoveSession(TetrisBlock *&block);
   void BlockMoveLeft(TetrisBlock *&block);
   void BlockMoveRight(TetrisBlock *&block);
-  void BlockMoveDown(TetrisBlock *&block);
+  bool BlockMoveDown(TetrisBlock *&block);
   void BlockHardDrop(TetrisBlock *&block);
 
   bool CheckBlockCollisionLeft(TetrisBlock *&block);
