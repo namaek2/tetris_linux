@@ -12,12 +12,6 @@
 #define QUE_RIGHT_BORDER 47
 #define QUE_TOP_BORDER 2
 
-TetrisInterface::TetrisInterface() {
-  ScreenBorder();
-  GameBorder();
-  DrawQueBoxBorder();
-}
-
 void TetrisInterface::ScreenBorder() {
   system("clear");
 

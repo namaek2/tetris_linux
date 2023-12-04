@@ -7,17 +7,14 @@
 #include "ctime"
 
 TetrisGame::TetrisGame() {
-  // TetrisStart s;
-  // s.~TetrisStart();
+  TetrisStart s;
+  game_level = s.GetMenuSelected();
+  s.~TetrisStart();
 
   GameInit();
 
   TetrisInterface::DrawQueBlocks(que_blocks);
-  //    TetrisInterface::GameOver();
-
-  // for (auto &que_block : que_blocks) {
-  //   delete que_block;
-  //}
+  // TetrisInterface::GameOver();
 }
 
 void TetrisGame::GameInit() {

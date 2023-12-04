@@ -29,27 +29,29 @@ enum level { BEGINNER = 20, AMATEUR = 22, EXPERT = 24, EXIT = 26 };
 
 class TetrisStart {
 private:
-  int cursor_y = 20;
-  int menu_selected = 0;
+  int cursor_y;
+  int menu_selected;
 
 public:
   static int GetEnum(int level_type);
   TetrisStart();
-  ~TetrisStart();
+  //~TetrisStart();
 
-  static void PrintTitle();
-  static void PrintMenu();
+  // static int Init();
+
+  void PrintTitle();
+  void PrintMenu();
 
   void SelectMenu();
-  int Session();
+  void Session();
   void CursorMove(int dirrection, int y);
-  int MenuSelected(int y);
+  void MenuSelected(int y);
 
-  int GetCursorY() const;
+  int GetCursorY();
   void SetCursorY(int y);
 
-  int GetMenuSelected() const;
-  void SetMenuSelected(int y);
+  int GetMenuSelected();
+  void SetMenuSelected(int m);
 
   static void PrintT(int x, int y);
   static void PrintE(int x, int y);
@@ -173,8 +175,6 @@ private:
   static const int QUE_BOX_SIZE = 6;
 
 public:
-  TetrisInterface();
-
   static void ScreenBorder();
   static void GameBorder();
   static void GameOver();
@@ -184,6 +184,7 @@ public:
 
 class TetrisGame {
 private:
+  int game_level = 0;
   bool game_stage[25][12] = {false};
   bool used_blocks[7] = {false};
   // unique_ptr<TetrisBlock> block[5];

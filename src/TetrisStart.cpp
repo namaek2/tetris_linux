@@ -11,13 +11,13 @@
 
 TetrisStart::TetrisStart() {
   system("clear");
+  SetCursorY(20);
+  SetMenuSelected(0);
   hide();
   PrintTitle();
   PrintMenu();
   SelectMenu();
 }
-
-TetrisStart::~TetrisStart() { delete this; }
 
 int TetrisStart::GetEnum(int level_type) {
   if (level_type == BEGINNER) {
@@ -73,8 +73,8 @@ void TetrisStart::SelectMenu() {
   int num = 0;
   while (true) {
     for (int i = 0; i < 100; i++) {
-      int temp = Session();
-      if (temp == 0) {
+      Session();
+      if (GetMenuSelected() == 0) {
         continue;
       }
       return;
@@ -93,21 +93,22 @@ void TetrisStart::SelectMenu() {
   }
 }
 
-int TetrisStart::Session() {
+void TetrisStart::Session() {
   if (TetrisInput::_kbhit()) {
     int input = TetrisInput::_getch();
 
     switch (input) {
-    case ENTER:
-      return MenuSelected(GetCursorY());
-    case ARROW:
+    case ENTER: {
+      MenuSelected(GetCursorY());
+      return;
+    }
+    case ARROW: {
       input = TetrisInput::_getch();
       CursorMove(input, GetCursorY());
     }
+    }
   }
   usleep(1000);
-
-  return 0;
 }
 
 void TetrisStart::CursorMove(int dirrection, int y) {
@@ -135,7 +136,7 @@ void TetrisStart::CursorMove(int dirrection, int y) {
 }
 
 // 선택시 반짝거림
-int TetrisStart::MenuSelected(int y) {
+void TetrisStart::MenuSelected(int y) {
   for (int i = 0; i < 5; i++) {
     TetrisInput::gotoxy(74, y);
     cout << "        ";
@@ -146,7 +147,6 @@ int TetrisStart::MenuSelected(int y) {
   }
 
   SetMenuSelected(GetEnum(y));
-  return GetMenuSelected();
 }
 
 void TetrisStart::PrintT(int x, int y) // T 출력
@@ -239,10 +239,10 @@ void TetrisStart::PrintS(int x, int y) // S 출력
   cout << "▣▣▣▣▣▣▣ ";
 }
 
-int TetrisStart::GetCursorY() const { return cursor_y; }
+int TetrisStart::GetCursorY() { return cursor_y; }
 
 void TetrisStart::SetCursorY(int y) { cursor_y = y; }
 
-int TetrisStart::GetMenuSelected() const { return menu_selected; }
+int TetrisStart::GetMenuSelected() { return menu_selected; }
 
 void TetrisStart::SetMenuSelected(int m) { menu_selected = m; }
