@@ -47,19 +47,19 @@ void TetrisGame::GameInit() {
 }
 
 void TetrisGame::GameMain() {
-  // TetrisBlock *active_block = que_blocks[0]->Clone();
-  // PushQueBlock();
+  TetrisBlock *active_block = que_blocks[0]->Clone();
+  PushQueBlock();
   TetrisInterface::DrawQueBlocks(que_blocks);
   usleep(5000000);
-  /*
-    while (true) {
-      BlockMoveSession(active_block);
-      FixGameStage(active_block);
-      CheckGameStage();
-      if (CheckGameOver()) {
-        return;
-      }
-    }*/
+
+  while (true) {
+    BlockMoveSession(active_block);
+    FixGameStage(active_block);
+    CheckGameStage();
+    if (CheckGameOver()) {
+      return;
+    }
+  }
 }
 
 void TetrisGame::InitGameStage() {
