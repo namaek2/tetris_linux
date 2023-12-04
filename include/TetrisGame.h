@@ -18,6 +18,7 @@
 #define CYAN Color::Modifier(Color::FG_CYAN);
 #define GREEN Color::Modifier(Color::FG_GREEN);
 #define WHITE Color::Modifier(Color::FG_WHITE);
+#define BLACK Color::Modifier(Color::FG_BLACK);
 #define ORANGE Color::Modifier(Color::FG_ORANGE);
 
 #define ENTER 13
@@ -92,6 +93,7 @@ public:
   void SetBlock(bool arr[4][4]);
   void BlockPrint(int y, int x);
   void BlockPrintErase(int y, int x);
+  void BlockPrintGuide(int y, int x);
 
   TetrisBlock();
   virtual ~TetrisBlock();
@@ -230,11 +232,13 @@ private:
   int cur_x = 0;
   int game_stage[25][12] = {0};
   bool used_blocks[7] = {false};
-  // unique_ptr<TetrisBlock> block[5];
   TetrisBlock *que_blocks[5];
 
   clock_t start = NULL;
   clock_t end = NULL;
+  float duration = 0;
+
+  int time_passed = 0;
 
 public:
   TetrisGame();
@@ -248,7 +252,7 @@ public:
   int SetRandomNum();
   void CheckAllBlockUsed();
 
-  void GameMain(TetrisBlock *&block);
+  void GameMain();
   void PushQueBlock();
 
   void FixGameStage(TetrisBlock *&block);
@@ -256,8 +260,13 @@ public:
   void LineCompleted(int line_y);
   void LineCompletedScore(int combo);
 
-  void KeyBoardInput(TetrisBlock *&block);
-  void ArrowEscInput(TetrisBlock *&block);
+  bool CheckGameOver();
+
+  bool KeyBoardInput(TetrisBlock *&block);
+  bool ArrowEscInput(TetrisBlock *&block);
+
+  void SetWaitTime();
+  bool CheckWaitTime();
 
   void BlockTurnLeft(TetrisBlock *&block);
   void BlockTurnRight(TetrisBlock *&block);
@@ -267,6 +276,9 @@ public:
   void BlockMoveRight(TetrisBlock *&block);
   bool BlockMoveDown(TetrisBlock *&block);
   void BlockHardDrop(TetrisBlock *&block);
+
+  void BlockPrintGuide(TetrisBlock *&block);
+  void BlockEraseGuide(TetrisBlock *&block);
 
   bool CheckBlockCollisionLeft(TetrisBlock *&block);
   bool CheckBlockCollisionRight(TetrisBlock *&block);

@@ -46,6 +46,8 @@ void TetrisInterface::GameBorder() {
 
 void TetrisInterface::DrawQueBlocks(TetrisBlock **que_blocks) {
   for (int i = 0; i < QUE_BLOCK_COUNT; ++i) {
+    que_blocks[i]->BlockPrintErase(QUE_LEFT_BORDER + 2,
+                                   QUE_TOP_BORDER + 2 + i * (QUE_BOX_SIZE + 1));
     que_blocks[i]->BlockPrint(QUE_LEFT_BORDER + 2,
                               QUE_TOP_BORDER + 2 + i * (QUE_BOX_SIZE + 1));
   }

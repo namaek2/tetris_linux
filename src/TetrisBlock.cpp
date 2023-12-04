@@ -35,6 +35,17 @@ void TetrisBlock::BlockPrint(int y, int x) {
   }
 }
 
+void TetrisBlock::BlockPrintGuide(int y, int x) {
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      if (block[i][j]) { // 블록이 있어야 할 공간이면 출력
+        TetrisInput::gotoxy(x + j, y + i);
+        cout << "▣";
+      }
+    }
+  }
+}
+
 void TetrisBlock::BlockPrintErase(int y, int x) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
