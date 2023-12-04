@@ -3,6 +3,8 @@
 //
 
 #include "../include/TetrisGame.h"
+#include "cstdlib"
+#include "ctime"
 
 TetrisGame::TetrisGame() {
   // TetrisStart s;
@@ -15,6 +17,10 @@ TetrisGame::TetrisGame() {
 void TetrisGame::GameInit() {
   TetrisInterface draw_borders;
   SetGameStage();
+
+  for (int i = 0; i < 5; i++) {
+    SetQueBlock(&que_blocks[i]);
+  }
 }
 
 void TetrisGame::SetGameStageValue(int y, int x, bool value) {
@@ -32,7 +38,71 @@ void TetrisGame::SetGameStage() {
     SetGameStageValue(i, 11, true);
   }
 }
+
+void TetrisGame::SetQueBlock(TetrisBlock **que_block) {
+  int random_num = SetRandomBlock();
+
+  switch (random_num) {
+  case 0: {
+    *que_block = new TetrisBlockI();
+    break;
+  }
+  case 1: {
+    *que_block = new TetrisBlockT();
+    break;
+  }
+  case 2: {
+    *que_block = new TetrisBlockO();
+    break;
+  }
+  case 3: {
+    *que_block = new TetrisBlockL();
+    break;
+  }
+  case 4: {
+    *que_block = new TetrisBlockJ();
+    break;
+  }
+  case 5: {
+    *que_block = new TetrisBlockS();
+    break;
+  }
+  case 6: {
+    *que_block = new TetrisBlockZ();
+    break;
+  }
+  }
+}
+
+int TetrisGame::SetRandomBlock() {
+  srand((unsigned int)time(NULL));
+
+  int num = rand() % 7;
+  while (used_blocks[num]) {
+    num = rand() % 7;
+  }
+  used_blocks[num] = true;
+
+  CheckAllBlockUsed();
+
+  return num;
+}
+
+void TetrisGame::CheckAllBlockUsed() {
+  for (bool used_block : used_blocks) {
+    if (!used_block) {
+      return;
+    }
+  }
+
+  for (bool used_block : used_blocks) {
+    used_block = false;
+  }
+}
+
 /*
+
+
 
 void EraseQueBlock(void) {
   BlockPrintErase(blocksetprint[0], 40, 7); // 첫번째 대기

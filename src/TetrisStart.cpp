@@ -10,7 +10,6 @@
 #define DOWN 66
 
 TetrisStart::TetrisStart() {
-
   system("clear");
   hide();
   PrintTitle();

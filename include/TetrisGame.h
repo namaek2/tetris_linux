@@ -31,20 +31,6 @@ enum level { BEGINNER = 20, AMATEUR = 22, EXPERT = 24, EXIT = 26 };
 // 게임 진행 : 가로 10칸 세로 20칸
 // 외곽 테두리 : 양 옆 1칸, 상단 1칸
 
-class TetrisGame {
-private:
-  bool game_stage[25][12] = {false};
-  bool block[4][4] = {false};
-  bool que_block[5][4][4] = {false};
-
-public:
-  TetrisGame();
-  void GameInit();
-  void NewActiveBlock();
-  void SetGameStageValue(int y, int x, bool value);
-  void SetGameStage();
-};
-
 class TetrisInterface {
 private:
 public:
@@ -95,6 +81,7 @@ public:
   void BlockPrint(int x, int y);
   void BlockPrintErase(int x, int y);
 
+  virtual ~TetrisBlock();
   virtual void BlockColor();
   virtual void BlockTurnClockWise();
   virtual void BlockTurnReverseClockWise();
@@ -108,6 +95,7 @@ private:
                       {false, false, false, false}};
 
 public:
+  ~TetrisBlockI() override;
   void BlockColor() override;
   void BlockTurnClockWise() override;
   void BlockTurnReverseClockWise() override;
@@ -121,6 +109,7 @@ private:
                       {false, false, false, false}};
 
 public:
+  ~TetrisBlockT() override;
   void BlockColor() override;
 };
 
@@ -132,6 +121,7 @@ private:
                       {false, false, false, false}};
 
 public:
+  ~TetrisBlockO() override;
   void BlockColor() override;
   void BlockTurnClockWise() override;
   void BlockTurnReverseClockWise() override;
@@ -145,6 +135,7 @@ private:
                       {false, false, false, false}};
 
 public:
+  ~TetrisBlockL() override;
   void BlockColor() override;
 };
 
@@ -156,6 +147,7 @@ private:
                       {false, false, false, false}};
 
 public:
+  ~TetrisBlockJ() override;
   void BlockColor() override;
 };
 
@@ -167,6 +159,7 @@ private:
                       {false, false, false, false}};
 
 public:
+  ~TetrisBlockS() override;
   void BlockColor() override;
 };
 
@@ -178,7 +171,25 @@ private:
                       {false, false, false, false}};
 
 public:
+  ~TetrisBlockZ() override;
   void BlockColor() override;
+};
+
+class TetrisGame {
+private:
+  bool game_stage[25][12] = {false};
+  bool used_blocks[7] = {false};
+  TetrisBlock *que_blocks[5];
+
+public:
+  TetrisGame();
+  void GameInit();
+  void NewActiveBlock();
+  void SetGameStageValue(int y, int x, bool value);
+  void SetGameStage();
+  void SetQueBlock(TetrisBlock **que_block);
+  int SetRandomBlock();
+  void CheckAllBlockUsed();
 };
 
 #endif // TETRIS_TETRISGAME_H

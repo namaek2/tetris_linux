@@ -44,7 +44,10 @@ void TetrisBlock::SetBlockBool(const bool arr[4][4]) {
   }
 }
 */
-void TetrisBlock::BlockColor(){};
+
+TetrisBlock::~TetrisBlock() { delete this; }
+
+void TetrisBlock::BlockColor() {}
 
 void TetrisBlock::BlockPrint(int x, int y) {
   BlockColor();
@@ -163,3 +166,11 @@ void TetrisBlockL::BlockColor() { cout << ORANGE; }
 void TetrisBlockJ::BlockColor() { cout << BLUE; }
 void TetrisBlockS::BlockColor() { cout << GREEN; }
 void TetrisBlockZ::BlockColor() { cout << RED; }
+
+TetrisBlockI::~TetrisBlockI() { delete this; }
+TetrisBlockT::~TetrisBlockT() { delete this; }
+TetrisBlockO::~TetrisBlockO() { delete this; }
+TetrisBlockL::~TetrisBlockL() { delete this; }
+TetrisBlockJ::~TetrisBlockJ() { delete this; }
+TetrisBlockS::~TetrisBlockS() { delete this; }
+TetrisBlockZ::~TetrisBlockZ() { delete this; }
