@@ -32,7 +32,7 @@
 #define QUE_BLOCK_COUNT 5
 #define QUE_BOX_SIZE 6
 
-#define START_X 15
+#define START_X 14
 #define START_Y 7
 
 using namespace std;
@@ -79,9 +79,10 @@ class TetrisBlock {
 private:
 public:
   bool block[4][4]{};
-  void BlockSet(bool arr[4][4]);
-  void BlockPrint(int x, int y);
-  void BlockPrintErase(int x, int y);
+  bool GetBlock(int y, int x);
+  void SetBlock(bool arr[4][4]);
+  void BlockPrint(int y, int x);
+  void BlockPrintErase(int y, int x);
 
   TetrisBlock();
   virtual ~TetrisBlock();
@@ -208,6 +209,8 @@ public:
 class TetrisGame {
 private:
   int game_level = 0;
+  int cur_y = 0;
+  int cur_x = 0;
   bool game_stage[25][12] = {false};
   bool used_blocks[7] = {false};
   // unique_ptr<TetrisBlock> block[5];
@@ -216,14 +219,26 @@ private:
 public:
   TetrisGame();
   void GameInit();
-  void GameMain();
-  void ControlBlock();
-  void SetGameStageValue(int y, int x, bool value);
-  void SetGameStage();
-  void PushQueBlock();
+  void InitGameStage();
+  bool GetGameStage(int y, int x);
+  void SetGameStage(int y, int x, bool value);
   void SetQueBlock(TetrisBlock *&block);
   int SetRandomNum();
   void CheckAllBlockUsed();
+
+  void GameMain(TetrisBlock *&block);
+  void PushQueBlock();
+
+  void BlockMove(TetrisBlock *&block);
+  void BlockMoveLeft(TetrisBlock *&block);
+  void BlockMoveRight(TetrisBlock *&block);
+  void BlockMoveDown(TetrisBlock *&block);
+  void BlockHardDrop(TetrisBlock *&block);
+
+  bool CheckBlockCollisionLeft(TetrisBlock *&block);
+  bool CheckBlockCollisionRight(TetrisBlock *&block);
+  bool CheckBlockCollisionDown(TetrisBlock *&block);
+  bool CheckBlockCollision(TetrisBlock *&block, int y, int x);
 };
 
 #endif // TETRIS_TETRISGAME_H

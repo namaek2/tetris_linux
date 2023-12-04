@@ -11,14 +11,16 @@ TetrisBlock::~TetrisBlock() { delete this; }
 
 void TetrisBlock::BlockColor() {}
 
-void TetrisBlock::BlockSet(bool arr[4][4]) {
+bool TetrisBlock::GetBlock(int y, int x) { return block[y][x]; }
+
+void TetrisBlock::SetBlock(bool arr[4][4]) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       block[i][j] = arr[i][j];
     }
   }
 }
-void TetrisBlock::BlockPrint(int x, int y) {
+void TetrisBlock::BlockPrint(int y, int x) {
   BlockColor();
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
@@ -33,7 +35,7 @@ void TetrisBlock::BlockPrint(int x, int y) {
   }
 }
 
-void TetrisBlock::BlockPrintErase(int x, int y) {
+void TetrisBlock::BlockPrintErase(int y, int x) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (y + i < 11 || x + j < 11 || y + i > 30 || x + j > 20) {
@@ -136,13 +138,13 @@ void TetrisBlockJ::BlockColor() { cout << BLUE; }
 void TetrisBlockS::BlockColor() { cout << GREEN; }
 void TetrisBlockZ::BlockColor() { cout << RED; }
 
-TetrisBlockI::TetrisBlockI() { BlockSet(default_block); }
-TetrisBlockT::TetrisBlockT() { BlockSet(default_block); }
-TetrisBlockO::TetrisBlockO() { BlockSet(default_block); }
-TetrisBlockL::TetrisBlockL() { BlockSet(default_block); }
-TetrisBlockJ::TetrisBlockJ() { BlockSet(default_block); }
-TetrisBlockS::TetrisBlockS() { BlockSet(default_block); }
-TetrisBlockZ::TetrisBlockZ() { BlockSet(default_block); }
+TetrisBlockI::TetrisBlockI() { SetBlock(default_block); }
+TetrisBlockT::TetrisBlockT() { SetBlock(default_block); }
+TetrisBlockO::TetrisBlockO() { SetBlock(default_block); }
+TetrisBlockL::TetrisBlockL() { SetBlock(default_block); }
+TetrisBlockJ::TetrisBlockJ() { SetBlock(default_block); }
+TetrisBlockS::TetrisBlockS() { SetBlock(default_block); }
+TetrisBlockZ::TetrisBlockZ() { SetBlock(default_block); }
 
 TetrisBlockI::~TetrisBlockI() { delete this; }
 TetrisBlockT::~TetrisBlockT() { delete this; }

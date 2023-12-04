@@ -14,9 +14,11 @@ TetrisGame::TetrisGame() {
   GameInit();
 
   TetrisInterface::DrawQueBlocks(que_blocks);
+  cur_y = START_Y;
+  cur_x = START_X;
   TetrisBlock *active_block = que_blocks[0]->Clone();
 
-  GameMain();
+  GameMain(active_block);
 
   //  TetrisInterface::GameOver();
 }
@@ -26,35 +28,42 @@ void TetrisGame::GameInit() {
   TetrisInterface::GameBorder();
   TetrisInterface::DrawQueBoxBorder();
 
+  InitGameStage();
   for (TetrisBlock *&que_block : que_blocks) {
     SetQueBlock(que_block);
   }
 }
 
-void TetrisGame::GameMain() { PushQueBlock(); }
+void TetrisGame::GameMain(TetrisBlock *&block) {
+  PushQueBlock();
+  while (true) {
+    BlockMove(block);
+  }
+}
 
-void TetrisGame::ControlBlock() {
-  int buff = 0;
-
-  float duration = 0;
-
+/*
+void TetrisGame::BlockMove(TetrisBlock *&block) {
   TetrisInterface::DrawGameTopBar();
 
-  // guide(); // 가이드 블록 출력
-  // start = NULL;
-  /*
-  while (1) // 무한반복
-  {
-    for (i = 0; i < a; i++) // a*10 밀리세컨드 = 블록이 한칸씩 내려오는 시간
-    {
-      if (start != NULL) // 땅에 닿고 1초 카운트가 진행중 일 때
-      {
-        end = clock();                   // 현재시각
-        duration = (float)(end - start); // 카운트 계산
+  cur_y = START_Y;
+  cur_x = START_X;
 
-        if (duration >= 1000) // 1초 경과시
-        {
-          godown(1); // 강제 하드드랍 후 고정
+  // guide(); // 가이드 블록 출력
+
+  clock_t start = NULL;
+  clock_t end = NULL;
+  float duration = 0;
+
+  while (true) // 무한반복
+  {
+    // game_level * 10 밀리세컨드 = 블록이 한칸씩 내려오는 시간
+    for (int i = 0; i < game_level; i++) {
+      if (start != NULL) { // 땅에 닿고 1초 카운트가 진행중 일 때
+        end = clock();     // 현재시각
+        duration = (float)(end - start); // 경과 시간 계산
+
+        if (duration >= 1000) { // 1초 이상 경과시
+          BlockHardDrop(block); // 하드드랍 후 고정
           return;
         }
       }
@@ -95,23 +104,25 @@ void TetrisGame::ControlBlock() {
         end = NULL();
       }
     }
-  }*/
+  }
 }
-
-void TetrisGame::SetGameStageValue(int y, int x, bool value) {
-  game_stage[y][x] = value;
-}
-
-void TetrisGame::SetGameStage() {
+*/
+void TetrisGame::InitGameStage() {
   // 게임 판 경계선 세팅
   for (int i = 0; i < 12; i++) {
-    SetGameStageValue(24, i, true);
+    SetGameStage(24, i, true);
   }
 
   for (int i = 0; i < 24; i++) {
-    SetGameStageValue(i, 0, true);
-    SetGameStageValue(i, 11, true);
+    SetGameStage(i, 0, true);
+    SetGameStage(i, 11, true);
   }
+}
+
+bool TetrisGame::GetGameStage(int y, int x) { return game_stage[y][x]; }
+
+void TetrisGame::SetGameStage(int y, int x, bool value) {
+  game_stage[y][x] = value;
 }
 
 void TetrisGame::PushQueBlock() {
@@ -171,16 +182,95 @@ int TetrisGame::SetRandomNum() {
 }
 
 void TetrisGame::CheckAllBlockUsed() {
-  for (bool used_block : used_blocks) {
+  for (bool &used_block : used_blocks) {
     if (!used_block) {
       return;
     }
   }
 
-  for (bool used_block : used_blocks) {
+  for (bool &used_block : used_blocks) {
     used_block = false;
   }
 }
+
+void TetrisGame::BlockMoveLeft(TetrisBlock *&block) { // 좌로 이동
+  if (CheckBlockCollisionLeft(block) != 1) {          // 간섭 없을 시
+    block->BlockPrintErase(cur_y, cur_x);             // 현재 블록 지우기
+    cur_x -= 1;                                       // 좌표 이동
+    // guide();                              // 가이드 블록 출력
+    block->BlockPrint(cur_y, cur_x); // 블록 출력
+  }
+}
+
+void TetrisGame::BlockMoveRight(TetrisBlock *&block) { // 좌로 이동
+  if (CheckBlockCollisionRight(block) != 1) {          // 간섭 없을 시
+    block->BlockPrintErase(cur_y, cur_x); // 현재 블록 지우기
+    cur_x += 1;                           // 좌표 이동
+    // guide();                              // 가이드 블록 출력
+    block->BlockPrint(cur_y, cur_x); // 블록 출력
+  }
+}
+
+void TetrisGame::BlockMoveDown(TetrisBlock *&block) { // 좌로 이동
+  if (CheckBlockCollisionDown(block) != 1) {          // 간섭 없을 시
+    block->BlockPrintErase(cur_y, cur_x);             // 현재 블록 지우기
+    cur_y += 1;                                       // 좌표 이동
+    // guide();                              // 가이드 블록 출력
+    block->BlockPrint(cur_y, cur_x); // 블록 출력
+  }
+}
+
+void TetrisGame::BlockHardDrop(TetrisBlock *&block) {
+  block->BlockPrintErase(cur_y, cur_x);
+  while (!CheckBlockCollisionDown(block)) {
+    cur_y++;
+  }
+
+  block->BlockPrint(cur_y, cur_x);
+}
+
+bool TetrisGame::CheckBlockCollision(TetrisBlock *&block, int y, int x) {
+  if (block->GetBlock(y, x) &&
+      GetGameStage(cur_y - START_Y + y, cur_x - START_X + 4 + x)) {
+    return true;
+  }
+  return false;
+}
+
+bool TetrisGame::CheckBlockCollisionLeft(TetrisBlock *&block) {
+  for (int x = 0; x < 4; x++) {
+    for (int y = 3; y >= 0; y--) {
+      if (CheckBlockCollision(block, y, x)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+bool TetrisGame::CheckBlockCollisionRight(TetrisBlock *&block) {
+  for (int x = 3; x >= 0; x--) {
+    for (int y = 3; y >= 0; y--) {
+      if (CheckBlockCollision(block, y, x)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+bool TetrisGame::CheckBlockCollisionDown(TetrisBlock *&block) {
+  for (int y = 3; y >= 0; y--) {
+    for (int x = 0; x < 4; x++) {
+      if (CheckBlockCollision(block, y, x)) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
 
 /*
 
@@ -202,21 +292,3 @@ void EraseQueBlock(void) {
   rvprintsq(blocksetprint[4]); // 다섯번째 대기
 }
 
-// 대기중인 블록 한칸씩 앞으로 당기기
-void NewActiveBlock(int num) {
-  TetrisBlock::BlockPrintErase(); // 대기중인 블록 잔상 제거
-  blockprintwall();               // 대기중인 블록 경계선 출력
-
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      acblock[i][j] = blocksetprint[0][i][j];
-      blocksetprint[0][i][j] = blocksetprint[1][i][j];
-      blocksetprint[1][i][j] = blocksetprint[2][i][j];
-      blocksetprint[2][i][j] = blocksetprint[3][i][j];
-      blocksetprint[3][i][j] = blocksetprint[4][i][j];
-      blocksetprint[4][i][j] = block[num][i][j];
-    }
-  }
-
-  blockprint(); // 대기중인 블록 출력
-}*/
