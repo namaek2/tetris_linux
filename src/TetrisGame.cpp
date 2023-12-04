@@ -64,6 +64,11 @@ void TetrisGame::GameMain() {
 
 void TetrisGame::InitGameStage() {
   // 게임 판 경계선 세팅
+  for (int i = 0; i < 25; i++) {
+    for (int j = 0; j < 12; j++) {
+      SetGameStage(i, j, EMPTY);
+    }
+  }
   for (int i = 0; i < 12; i++) {
     SetGameStage(24, i, LINE);
   }
@@ -242,18 +247,23 @@ bool TetrisGame::KeyBoardInput(TetrisBlock *&block) {
   switch (input) {
   case SPACE: { // space
     BlockHardDrop(block);
+    break;
   }
   case 83: { // S
     BlockTurnLeft(block);
+    break;
   }
   case 115: { // s
     BlockTurnLeft(block);
+    break;
   }
   case 68: { // D
     BlockTurnRight(block);
+    break;
   }
   case 100: { // d
     BlockTurnRight(block);
+    break;
   }
   case ARROW_ESC: {
     return ArrowEscInput(block);
@@ -268,16 +278,18 @@ bool TetrisGame::ArrowEscInput(TetrisBlock *&block) {
     input = TetrisInput::_getch();
     switch (input) {
     default: { // 예외시
-      return true;
+      break;
     }
     case DOWN: { // 방향키 아래
       return BlockMoveDown(block);
     }
     case LEFT: { // 방향키 왼쪽
       BlockMoveLeft(block);
+      break;
     }
     case RIGHT: { // 방향키 오른쪽
       BlockMoveRight(block);
+      break;
     }
     }
     return true;
@@ -287,15 +299,14 @@ bool TetrisGame::ArrowEscInput(TetrisBlock *&block) {
 
 void TetrisGame::SetWaitTime() {
   start = NULL; // 카운트 초기화
-  end = NULL;
-  time_passed = 0; // 밑으로 이동할 때 지연시간 초기화(0.1초 지났을 때
-                   // 밑으로 하강시 다시 0.3초를 기다려야 1칸 하강)
+  end_t = NULL;
+  time_passed = 0;
 }
 
 bool TetrisGame::CheckWaitTime() {
-  if (start != NULL) { // 땅에 닿고 1초 카운트가 진행중 일 때
-    end = clock();     // 현재시각
-    duration = (float)(end - start); // 카운트 계산
+  if (start != NULL) {
+    end_t = clock();
+    duration = (float)(end_t - start); // 카운트 계산
 
     if (duration >= 1000) { // 1초 이상 경과시
       return true;
@@ -373,10 +384,16 @@ void TetrisGame::BlockEraseGuide(TetrisBlock *&block) {
   block->BlockPrintErase(cur_y, cur_x);
   cur_y = y;
 }
+// x  y
+// 11 11
+// 20 30
 
-bool TetrisGame::CheckBlockCollision(TetrisBlock *&block, int y, int x) {
+// 01 04
+// 10 23
+bool TetrisGame::CheckBlockCollision(TetrisBlock *&block, int y, int x, int a,
+                                     int b) {
   if (block->GetBlock(y, x) &&
-      GetGameStage(cur_y - START_Y + y + 1, cur_x - START_X + 4 + x) != EMPTY) {
+      GetGameStage(cur_y - START_Y + y + a, cur_x - 10 + x + b) != EMPTY) {
     return true;
   }
   return false;
@@ -385,7 +402,7 @@ bool TetrisGame::CheckBlockCollision(TetrisBlock *&block, int y, int x) {
 bool TetrisGame::CheckBlockCollisionLeft(TetrisBlock *&block) {
   for (int x = 0; x < 4; x++) {
     for (int y = 3; y >= 0; y--) {
-      if (CheckBlockCollision(block, y, x)) {
+      if (CheckBlockCollision(block, y, x, 0, -11)) {
         return true;
       }
     }
@@ -397,7 +414,7 @@ bool TetrisGame::CheckBlockCollisionLeft(TetrisBlock *&block) {
 bool TetrisGame::CheckBlockCollisionRight(TetrisBlock *&block) {
   for (int x = 3; x >= 0; x--) {
     for (int y = 3; y >= 0; y--) {
-      if (CheckBlockCollision(block, y, x)) {
+      if (CheckBlockCollision(block, y, x, 0, 1)) {
         return true;
       }
     }
@@ -409,7 +426,7 @@ bool TetrisGame::CheckBlockCollisionRight(TetrisBlock *&block) {
 bool TetrisGame::CheckBlockCollisionDown(TetrisBlock *&block) {
   for (int y = 3; y >= 0; y--) {
     for (int x = 0; x < 4; x++) {
-      if (CheckBlockCollision(block, y, x)) {
+      if (CheckBlockCollision(block, y, x, 1, 0)) {
 
         return true;
       }
@@ -419,18 +436,17 @@ bool TetrisGame::CheckBlockCollisionDown(TetrisBlock *&block) {
   return false;
 }
 
-void TetrisGame::BlockMoveSession(TetrisBlock *&block) {
+void TetrisGame::BlockMoveSession(TetrisBlock *&block) const {
   cur_y = START_Y;
   cur_x = START_X;
 
   // guide(); // 가이드 블록 출력
 
-  while (true) { // 무한반복
-    // game_level * 10 밀리세컨드 = 블록이 한칸씩 내려오는 시간
+  while (true) {
     for (time_passed = 0; time_passed < game_level * 4; time_passed++) {
-      if (start != NULL) { // 땅에 닿고 1초 카운트가 진행중 일 때
-        end = clock();     // 현재시각
-        duration = (float)(end - start); // 카운트 계산
+      if (start != NULL) {
+        end_t = clock();
+        duration = (float)(end_t - start);
 
         if (duration >= 1000) { // 1초 이상 경과시
           return;

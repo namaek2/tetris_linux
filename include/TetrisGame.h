@@ -46,7 +46,11 @@
 
 static int cur_y = 0;
 static int cur_x = 0;
-
+static int game_stage[25][12] = {0};
+static clock_t start = NULL;
+static clock_t end_t = NULL;
+static float duration = 0;
+static int time_passed = 0;
 using namespace std;
 
 enum level { BEGINNER = 20, AMATEUR = 22, EXPERT = 24, EXIT = 26 };
@@ -231,24 +235,17 @@ class TetrisGame {
 private:
   int game_level = 0;
   int score = 0;
-  int game_stage[25][12] = {0};
   bool used_blocks[7] = {false};
   TetrisBlock *que_blocks[5];
-
-  clock_t start = NULL;
-  clock_t end = NULL;
-  float duration = 0;
-
-  int time_passed = 0;
 
 public:
   TetrisGame();
   void GameInit();
 
-  void InitGameStage();
-  int GetGameStage(int y, int x);
-  void SetGameStage(int y, int x, int value);
-  void DrawGameStage();
+  static void InitGameStage();
+  static int GetGameStage(int y, int x);
+  static void SetGameStage(int y, int x, int value);
+  static void DrawGameStage();
   void SetQueBlock(TetrisBlock *&block);
   int SetRandomNum();
   void CheckAllBlockUsed();
@@ -256,35 +253,36 @@ public:
   void GameMain();
   void PushQueBlock();
 
-  void FixGameStage(TetrisBlock *&block);
+  static void FixGameStage(TetrisBlock *&block);
   void CheckGameStage();
-  void LineCompleted(int line_y);
+  static void LineCompleted(int line_y);
   void LineCompletedScore(int combo);
 
-  bool CheckGameOver();
+  static bool CheckGameOver();
 
-  bool KeyBoardInput(TetrisBlock *&block);
-  bool ArrowEscInput(TetrisBlock *&block);
+  static bool KeyBoardInput(TetrisBlock *&block);
+  static bool ArrowEscInput(TetrisBlock *&block);
 
-  void SetWaitTime();
-  bool CheckWaitTime();
+  static void SetWaitTime();
+  static bool CheckWaitTime();
 
-  void BlockTurnLeft(TetrisBlock *&block);
-  void BlockTurnRight(TetrisBlock *&block);
+  static void BlockTurnLeft(TetrisBlock *&block);
+  static void BlockTurnRight(TetrisBlock *&block);
 
-  void BlockMoveSession(TetrisBlock *&block);
-  void BlockMoveLeft(TetrisBlock *&block);
-  void BlockMoveRight(TetrisBlock *&block);
-  bool BlockMoveDown(TetrisBlock *&block);
-  void BlockHardDrop(TetrisBlock *&block);
+  void BlockMoveSession(TetrisBlock *&block) const;
+  static void BlockMoveLeft(TetrisBlock *&block);
+  static void BlockMoveRight(TetrisBlock *&block);
+  static bool BlockMoveDown(TetrisBlock *&block);
+  static void BlockHardDrop(TetrisBlock *&block);
 
-  void BlockPrintGuide(TetrisBlock *&block);
-  void BlockEraseGuide(TetrisBlock *&block);
+  static void BlockPrintGuide(TetrisBlock *&block);
+  static void BlockEraseGuide(TetrisBlock *&block);
 
-  bool CheckBlockCollisionLeft(TetrisBlock *&block);
-  bool CheckBlockCollisionRight(TetrisBlock *&block);
-  bool CheckBlockCollisionDown(TetrisBlock *&block);
-  bool CheckBlockCollision(TetrisBlock *&block, int y, int x);
+  static bool CheckBlockCollisionLeft(TetrisBlock *&block);
+  static bool CheckBlockCollisionRight(TetrisBlock *&block);
+  static bool CheckBlockCollisionDown(TetrisBlock *&block);
+  static bool CheckBlockCollision(TetrisBlock *&block, int y, int x, int a,
+                                  int b);
 };
 
 #endif // TETRIS_TETRISGAME_H
