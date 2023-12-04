@@ -9,11 +9,7 @@
 #include "TetrisColor.h"
 #include "TetrisInput.h"
 #include <iostream>
-
-#define left_border 10
-#define right_border 21
-#define top_border 10
-#define bottom_border 31
+#include <memory>
 
 #define RED Color::Modifier(Color::FG_RED);
 #define MAGENTA Color::Modifier(Color::FG_MAGENTA);
@@ -30,17 +26,6 @@ enum level { BEGINNER = 20, AMATEUR = 22, EXPERT = 24, EXIT = 26 };
 
 // 게임 진행 : 가로 10칸 세로 20칸
 // 외곽 테두리 : 양 옆 1칸, 상단 1칸
-
-class TetrisInterface {
-private:
-public:
-  TetrisInterface();
-
-  static void ScreenBorder();
-  static void GameBorder();
-  static void GameOver();
-  static void DrawQueBorder();
-};
 
 class TetrisStart {
 private:
@@ -75,9 +60,9 @@ public:
 
 class TetrisBlock {
 private:
-  bool block[4][4]{};
-
 public:
+  bool block[4][4]{};
+  void BlockSet(bool arr[4][4]);
   void BlockPrint(int x, int y);
   void BlockPrintErase(int x, int y);
 
@@ -89,12 +74,13 @@ public:
 
 class TetrisBlockI : public TetrisBlock {
 private:
-  bool block[4][4] = {{false, false, false, false},
-                      {true, true, true, true},
-                      {false, false, false, false},
-                      {false, false, false, false}};
+  bool default_block[4][4] = {{false, false, false, false},
+                              {true, true, true, true},
+                              {false, false, false, false},
+                              {false, false, false, false}};
 
 public:
+  TetrisBlockI();
   ~TetrisBlockI() override;
   void BlockColor() override;
   void BlockTurnClockWise() override;
@@ -103,24 +89,26 @@ public:
 
 class TetrisBlockT : public TetrisBlock {
 private:
-  bool block[4][4] = {{false, false, true, false},
-                      {false, true, true, true},
-                      {false, false, false, false},
-                      {false, false, false, false}};
+  bool default_block[4][4] = {{false, false, true, false},
+                              {false, true, true, true},
+                              {false, false, false, false},
+                              {false, false, false, false}};
 
 public:
+  TetrisBlockT();
   ~TetrisBlockT() override;
   void BlockColor() override;
 };
 
 class TetrisBlockO : public TetrisBlock {
 private:
-  bool block[4][4] = {{false, false, false, false},
-                      {false, true, true, false},
-                      {false, true, true, false},
-                      {false, false, false, false}};
+  bool default_block[4][4] = {{false, false, false, false},
+                              {false, true, true, false},
+                              {false, true, true, false},
+                              {false, false, false, false}};
 
 public:
+  TetrisBlockO();
   ~TetrisBlockO() override;
   void BlockColor() override;
   void BlockTurnClockWise() override;
@@ -129,56 +117,76 @@ public:
 
 class TetrisBlockL : public TetrisBlock {
 private:
-  bool block[4][4] = {{false, false, false, true},
-                      {false, true, true, true},
-                      {false, false, false, false},
-                      {false, false, false, false}};
+  bool default_block[4][4] = {{false, false, false, true},
+                              {false, true, true, true},
+                              {false, false, false, false},
+                              {false, false, false, false}};
 
 public:
+  TetrisBlockL();
   ~TetrisBlockL() override;
   void BlockColor() override;
 };
 
 class TetrisBlockJ : public TetrisBlock {
 private:
-  bool block[4][4] = {{false, true, false, false},
-                      {false, true, true, true},
-                      {false, false, false, false},
-                      {false, false, false, false}};
+  bool default_block[4][4] = {{false, true, false, false},
+                              {false, true, true, true},
+                              {false, false, false, false},
+                              {false, false, false, false}};
 
 public:
+  TetrisBlockJ();
   ~TetrisBlockJ() override;
   void BlockColor() override;
 };
 
 class TetrisBlockS : public TetrisBlock {
 private:
-  bool block[4][4] = {{false, false, true, true},
-                      {false, true, true, false},
-                      {false, false, false, false},
-                      {false, false, false, false}};
+  bool default_block[4][4] = {{false, false, true, true},
+                              {false, true, true, false},
+                              {false, false, false, false},
+                              {false, false, false, false}};
 
 public:
+  TetrisBlockS();
   ~TetrisBlockS() override;
   void BlockColor() override;
 };
 
 class TetrisBlockZ : public TetrisBlock {
 private:
-  bool block[4][4] = {{false, true, true, false},
-                      {false, false, true, true},
-                      {false, false, false, false},
-                      {false, false, false, false}};
+  bool default_block[4][4] = {{false, true, true, false},
+                              {false, false, true, true},
+                              {false, false, false, false},
+                              {false, false, false, false}};
 
 public:
+  TetrisBlockZ();
   ~TetrisBlockZ() override;
   void BlockColor() override;
+};
+
+class TetrisInterface {
+private:
+  static const int QUE_BOX_COUNT = 5;
+  static const int QUE_BOX_SIZE = 6;
+
+public:
+  TetrisInterface();
+
+  static void ScreenBorder();
+  static void GameBorder();
+  static void GameOver();
+  static void DrawQueBlocks(TetrisBlock **que_blocks);
+  static void DrawQueBoxBorder();
 };
 
 class TetrisGame {
 private:
   bool game_stage[25][12] = {false};
   bool used_blocks[7] = {false};
+  // unique_ptr<TetrisBlock> block[5];
   TetrisBlock *que_blocks[5];
 
 public:
@@ -187,8 +195,8 @@ public:
   void NewActiveBlock();
   void SetGameStageValue(int y, int x, bool value);
   void SetGameStage();
-  void SetQueBlock(TetrisBlock **que_block);
-  int SetRandomBlock();
+  void SetQueBlock(TetrisBlock *&block);
+  int SetRandomNum();
   void CheckAllBlockUsed();
 };
 

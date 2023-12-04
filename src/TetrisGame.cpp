@@ -11,15 +11,22 @@ TetrisGame::TetrisGame() {
   // s.~TetrisStart();
 
   GameInit();
-  // TetrisInterface::GameOver();
+
+  TetrisInterface::DrawQueBlocks(que_blocks);
+  //    TetrisInterface::GameOver();
+
+  // for (auto &que_block : que_blocks) {
+  //   delete que_block;
+  //}
 }
 
 void TetrisGame::GameInit() {
-  TetrisInterface draw_borders;
-  SetGameStage();
+  TetrisInterface::ScreenBorder();
+  TetrisInterface::GameBorder();
+  TetrisInterface::DrawQueBoxBorder();
 
-  for (int i = 0; i < 5; i++) {
-    SetQueBlock(&que_blocks[i]);
+  for (TetrisBlock *&que_block : que_blocks) {
+    SetQueBlock(que_block);
   }
 }
 
@@ -39,42 +46,40 @@ void TetrisGame::SetGameStage() {
   }
 }
 
-void TetrisGame::SetQueBlock(TetrisBlock **que_block) {
-  int random_num = SetRandomBlock();
-
-  switch (random_num) {
+void TetrisGame::SetQueBlock(TetrisBlock *&block) {
+  switch (SetRandomNum()) {
   case 0: {
-    *que_block = new TetrisBlockI();
+    block = new TetrisBlockI();
     break;
   }
   case 1: {
-    *que_block = new TetrisBlockT();
+    block = new TetrisBlockT();
     break;
   }
   case 2: {
-    *que_block = new TetrisBlockO();
+    block = new TetrisBlockO();
     break;
   }
   case 3: {
-    *que_block = new TetrisBlockL();
+    block = new TetrisBlockL();
     break;
   }
   case 4: {
-    *que_block = new TetrisBlockJ();
+    block = new TetrisBlockJ();
     break;
   }
   case 5: {
-    *que_block = new TetrisBlockS();
+    block = new TetrisBlockS();
     break;
   }
   case 6: {
-    *que_block = new TetrisBlockZ();
+    block = new TetrisBlockZ();
     break;
   }
   }
 }
 
-int TetrisGame::SetRandomBlock() {
+int TetrisGame::SetRandomNum() {
   srand((unsigned int)time(NULL));
 
   int num = rand() % 7;

@@ -3,10 +3,19 @@
 //
 #include "../include/TetrisGame.h"
 
+#define LEFT_BORDER 10
+#define RIGHT_BORDER 21
+#define TOP_BORDER 10
+#define BOTTOM_BORDER 31
+
+#define QUE_LEFT_BORDER 40
+#define QUE_RIGHT_BORDER 47
+#define QUE_TOP_BORDER 2
+
 TetrisInterface::TetrisInterface() {
   ScreenBorder();
   GameBorder();
-  DrawQueBorder();
+  DrawQueBoxBorder();
 }
 
 void TetrisInterface::ScreenBorder() {
@@ -36,39 +45,46 @@ void TetrisInterface::ScreenBorder() {
 
 void TetrisInterface::GameBorder() {
   // 세로줄 출력
-  for (int i = 1; i < bottom_border - top_border; i++) {
-    TetrisInput::gotoxy(left_border, i + top_border);
+  for (int i = 1; i < BOTTOM_BORDER - TOP_BORDER; i++) {
+    TetrisInput::gotoxy(LEFT_BORDER, i + TOP_BORDER);
     cout << "◈";
-    TetrisInput::gotoxy(right_border, i + top_border);
+    TetrisInput::gotoxy(RIGHT_BORDER, i + TOP_BORDER);
     cout << "◈";
   }
 
   // 맨 밑 가로줄 출력
-  TetrisInput::gotoxy(left_border, bottom_border);
-  for (int i = 1; i < right_border - left_border + 2; i++) {
+  TetrisInput::gotoxy(LEFT_BORDER, BOTTOM_BORDER);
+  for (int i = 1; i < RIGHT_BORDER - LEFT_BORDER + 2; i++) {
     cout << "◈";
+  }
+}
+
+void TetrisInterface::DrawQueBlocks(TetrisBlock **que_blocks) {
+  for (int i = 0; i < QUE_BOX_COUNT; ++i) {
+    que_blocks[i]->BlockPrint(QUE_LEFT_BORDER + 2,
+                              QUE_TOP_BORDER + 2 + i * (QUE_BOX_SIZE + 1));
   }
 }
 
 // 대기 블록 인터페이스
 // 가로 8칸
-void TetrisInterface::DrawQueBorder() {
-  TetrisInput::gotoxy(38, 6);
-
+void TetrisInterface::DrawQueBoxBorder() {
+  TetrisInput::gotoxy(QUE_LEFT_BORDER, QUE_TOP_BORDER);
   cout << WHITE;
   cout << "◈NE  XT◈";
 
-  for (int i = 0; i < 5; i++) {
-    TetrisInput::gotoxy(38, 11 + i * 5);
-    for (int j = 0; j < 8; j++) {
+  for (int i = 1; i <= QUE_BOX_COUNT; i++) {
+    TetrisInput::gotoxy(QUE_LEFT_BORDER,
+                        QUE_TOP_BORDER + i * (QUE_BOX_SIZE + 1));
+    for (int j = 0; j < QUE_BOX_SIZE + 2; j++) {
       cout << "◈";
     }
   }
 
-  for (int i = 0; i < 26; i++) {
-    TetrisInput::gotoxy(38, 6 + i);
+  for (int i = 0; i < QUE_BOX_SIZE * QUE_BOX_COUNT + QUE_BOX_COUNT; i++) {
+    TetrisInput::gotoxy(QUE_LEFT_BORDER, QUE_TOP_BORDER + i);
     cout << "◈";
-    TetrisInput::gotoxy(45, 6 + i);
+    TetrisInput::gotoxy(QUE_RIGHT_BORDER, QUE_TOP_BORDER + i);
     cout << "◈";
   }
 }
@@ -77,37 +93,37 @@ void TetrisInterface::GameOver() {
   system("clear"); // 화면 초기화
 
   TetrisInput::gotoxy(56, 6);
-  printf(" ▣▣▣▣▣▣      ▣▣▣▣▣▣     ▣▣    ▣▣    ▣▣▣▣▣▣▣▣");
+  cout << " ▣▣▣▣▣▣      ▣▣▣▣▣▣     ▣▣    ▣▣    ▣▣▣▣▣▣▣▣";
   TetrisInput::gotoxy(56, 6 + 1);
-  printf("▣▣    ▣▣    ▣▣    ▣▣    ▣▣▣  ▣▣▣    ▣▣      ");
+  cout << "▣▣    ▣▣    ▣▣    ▣▣    ▣▣▣  ▣▣▣    ▣▣      ";
   TetrisInput::gotoxy(56, 6 + 2);
-  printf("▣▣    ▣▣    ▣▣    ▣▣    ▣▣ ▣▣ ▣▣    ▣▣      ");
+  cout << "▣▣    ▣▣    ▣▣    ▣▣    ▣▣ ▣▣ ▣▣    ▣▣      ";
   TetrisInput::gotoxy(56, 6 + 3);
-  printf("▣▣          ▣▣▣▣▣▣▣▣    ▣▣ ▣▣ ▣▣    ▣▣▣▣▣▣▣▣");
+  cout << "▣▣          ▣▣▣▣▣▣▣▣    ▣▣ ▣▣ ▣▣    ▣▣▣▣▣▣▣▣";
   TetrisInput::gotoxy(56, 6 + 4);
-  printf("▣▣  ▣▣▣▣    ▣▣    ▣▣    ▣▣    ▣▣    ▣▣      ");
+  cout << "▣▣  ▣▣▣▣    ▣▣    ▣▣    ▣▣    ▣▣    ▣▣      ";
   TetrisInput::gotoxy(56, 6 + 5);
-  printf("▣▣    ▣▣    ▣▣    ▣▣    ▣▣    ▣▣    ▣▣      ");
+  cout << "▣▣    ▣▣    ▣▣    ▣▣    ▣▣    ▣▣    ▣▣      ";
   TetrisInput::gotoxy(56, 6 + 6);
-  printf(" ▣▣▣▣▣▣     ▣▣    ▣▣    ▣▣    ▣▣    ▣▣▣▣▣▣▣▣");
+  cout << " ▣▣▣▣▣▣     ▣▣    ▣▣    ▣▣    ▣▣    ▣▣▣▣▣▣▣▣";
 
   TetrisInput::gotoxy(56, 6 + 8);
-  printf(" ▣▣▣▣▣▣     ▣▣    ▣▣    ▣▣▣▣▣▣▣▣    ▣▣▣▣▣▣▣ ");
+  cout << " ▣▣▣▣▣▣     ▣▣    ▣▣    ▣▣▣▣▣▣▣▣    ▣▣▣▣▣▣▣ ";
   TetrisInput::gotoxy(56, 6 + 9);
-  printf("▣▣    ▣▣    ▣▣    ▣▣    ▣▣          ▣▣    ▣▣");
+  cout << "▣▣    ▣▣    ▣▣    ▣▣    ▣▣          ▣▣    ▣▣";
   TetrisInput::gotoxy(56, 6 + 10);
-  printf("▣▣    ▣▣    ▣▣    ▣▣    ▣▣          ▣▣    ▣▣");
+  cout << "▣▣    ▣▣    ▣▣    ▣▣    ▣▣          ▣▣    ▣▣";
   TetrisInput::gotoxy(56, 6 + 11);
-  printf("▣▣    ▣▣    ▣▣    ▣▣    ▣▣▣▣▣▣▣▣    ▣▣▣▣▣▣▣ ");
+  cout << "▣▣    ▣▣    ▣▣    ▣▣    ▣▣▣▣▣▣▣▣    ▣▣▣▣▣▣▣ ";
   TetrisInput::gotoxy(56, 6 + 12);
-  printf("▣▣    ▣▣    ▣▣    ▣▣    ▣▣          ▣▣    ▣▣");
+  cout << "▣▣    ▣▣    ▣▣    ▣▣    ▣▣          ▣▣    ▣▣";
   TetrisInput::gotoxy(56, 6 + 13);
-  printf("▣▣    ▣▣     ▣▣  ▣▣     ▣▣          ▣▣    ▣▣");
+  cout << "▣▣    ▣▣     ▣▣  ▣▣     ▣▣          ▣▣    ▣▣";
   TetrisInput::gotoxy(56, 6 + 14);
-  printf(" ▣▣▣▣▣▣       ▣▣▣▣      ▣▣▣▣▣▣▣▣    ▣▣    ▣▣");
+  cout << " ▣▣▣▣▣▣       ▣▣▣▣      ▣▣▣▣▣▣▣▣    ▣▣    ▣▣";
 
   // TetrisInput::gotoxy(70, 25);
-  //  printf("YOUR SCORE : %d", score); // 최종 점수 출력
+  //  cout << "YOUR SCORE : %d", score; // 최종 점수 출력
 
   TetrisInput::gotoxy(65, 30);
   cout << "Press any key to go to menu";

@@ -4,46 +4,13 @@
 
 #include "../include/TetrisGame.h"
 
-// TetrisBlock::TetrisBlock(int shape) { SetBlock(shape); }
-
-/*
-void TetrisBlock::SetBlock(int shape) {
-  block_shape = shape;
-  switch (shape) {
-  case 0: {
-    SetBlockBool(BLOCK_I);
-  }
-  case 1: {
-    SetBlockBool(BLOCK_T);
-  }
-  case 2: {
-    SetBlockBool(BLOCK_O);
-  }
-  case 3: {
-    SetBlockBool(BLOCK_L);
-  }
-  case 4: {
-    SetBlockBool(BLOCK_J);
-  }
-  case 5: {
-    SetBlockBool(BLOCK_S);
-  }
-  case 6: {
-    SetBlockBool(BLOCK_Z);
-  }
-  }
-}
-*/
-
-/*
-void TetrisBlock::SetBlockBool(const bool arr[4][4]) {
+void TetrisBlock::BlockSet(bool arr[4][4]) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       block[i][j] = arr[i][j];
     }
   }
 }
-*/
 
 TetrisBlock::~TetrisBlock() { delete this; }
 
@@ -53,9 +20,9 @@ void TetrisBlock::BlockPrint(int x, int y) {
   BlockColor();
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
-      if (y + i < 11 || x + j < 11 || y + i > 50 || x + j > 30) {
-        continue;
-      }
+      // if (y + i < 11 || x + j < 11 || y + i > 50 || x + j > 30) {
+      //   continue;
+      // }
       if (block[i][j]) { // 블록이 있어야 할 공간이면 출력
         TetrisInput::gotoxy(x + j, y + i);
         cout << "▣";
@@ -166,6 +133,14 @@ void TetrisBlockL::BlockColor() { cout << ORANGE; }
 void TetrisBlockJ::BlockColor() { cout << BLUE; }
 void TetrisBlockS::BlockColor() { cout << GREEN; }
 void TetrisBlockZ::BlockColor() { cout << RED; }
+
+TetrisBlockI::TetrisBlockI() { BlockSet(default_block); }
+TetrisBlockT::TetrisBlockT() { BlockSet(default_block); }
+TetrisBlockO::TetrisBlockO() { BlockSet(default_block); }
+TetrisBlockL::TetrisBlockL() { BlockSet(default_block); }
+TetrisBlockJ::TetrisBlockJ() { BlockSet(default_block); }
+TetrisBlockS::TetrisBlockS() { BlockSet(default_block); }
+TetrisBlockZ::TetrisBlockZ() { BlockSet(default_block); }
 
 TetrisBlockI::~TetrisBlockI() { delete this; }
 TetrisBlockT::~TetrisBlockT() { delete this; }
