@@ -77,9 +77,9 @@ void TetrisInterface::DrawQueBoxBorder() {
 }
 
 void TetrisInterface::DrawGameTopBar() {
-  TetrisInput::gotoxy(LEFT_BORDER, TOP_BORDER);
-
-  for (int i = 0; i < RIGHT_BORDER - LEFT_BORDER + 1; i++) {
+  for (int i = 0; i < RIGHT_BORDER - LEFT_BORDER + 2; i++) {
+    cout << WHITE;
+    TetrisInput::gotoxy(LEFT_BORDER + i, TOP_BORDER);
     cout << "◈";
   }
 }

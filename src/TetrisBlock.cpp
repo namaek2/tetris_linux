@@ -49,10 +49,7 @@ void TetrisBlock::BlockPrintGuide(int y, int x) {
 void TetrisBlock::BlockPrintErase(int y, int x) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
-      if (y + i < 11 || x + j < 11 || y + i > 30 || x + j > 20) {
-        continue;
-      }
-      if (!block[i][j]) { // 블록이 없어야 할 공간이면 지우기
+      if (block[i][j]) { // 블록이 없어야 할 공간이면 지우기
         TetrisInput::gotoxy(x + j, y + i);
         cout << " ";
       }

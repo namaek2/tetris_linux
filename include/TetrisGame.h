@@ -44,6 +44,9 @@
 #define START_X 14
 #define START_Y 7
 
+static int cur_y = 0;
+static int cur_x = 0;
+
 using namespace std;
 
 enum level { BEGINNER = 20, AMATEUR = 22, EXPERT = 24, EXIT = 26 };
@@ -228,8 +231,6 @@ class TetrisGame {
 private:
   int game_level = 0;
   int score = 0;
-  int cur_y = 0;
-  int cur_x = 0;
   int game_stage[25][12] = {0};
   bool used_blocks[7] = {false};
   TetrisBlock *que_blocks[5];
