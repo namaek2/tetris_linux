@@ -46,3 +46,11 @@
 2	1260	1701736125304602787	CMakeFiles/tetris.dir/src/TetrisBlock.cpp.o	9ce597091b601cb8
 1	1446	1701736125491271471	CMakeFiles/tetris.dir/src/TetrisGame.cpp.o	702b5eab33b8d0bc
 1446	1564	1701736125607939399	tetris	7b092a4deb8c33b1
+1	1305	1701736785478184712	CMakeFiles/tetris.dir/src/main.cpp.o	bf8e540a2882e672
+2	1355	1701736785528185224	CMakeFiles/tetris.dir/src/TetrisInterface.cpp.o	74f21159298f8f51
+4	1413	1701736785584852472	CMakeFiles/tetris.dir/src/TetrisBlock.cpp.o	9ce597091b601cb8
+1	1552	1701736785724853908	CMakeFiles/tetris.dir/src/TetrisGame.cpp.o	702b5eab33b8d0bc
+2	1554	1701736785724853908	CMakeFiles/tetris.dir/src/TetrisStart.cpp.o	3cb76cc7f5fc7808
+1554	1709	1701736785881522182	tetris	7b092a4deb8c33b1
+1	929	1701736882452510829	CMakeFiles/tetris.dir/src/TetrisGame.cpp.o	702b5eab33b8d0bc
+930	1086	1701736882605845730	tetris	7b092a4deb8c33b1

@@ -308,22 +308,40 @@ void TetrisGame::SetWaitTime() {
   time_passed = 0;
 }
 
-bool TetrisGame::CheckWaitTime() {
-  if (start != 0) {
-    end_t = clock();
-    duration = (float)(end_t - start); // 카운트 계산
-
-    if (duration >= 1000) { // 1초 이상 경과시
-      return true;
+void TetrisGame::BlockTurnLeft(TetrisBlock *&block) {
+  BlockEraseGuide(block);
+  block->BlockPrintErase(cur_y, cur_x);
+  block->BlockTurnReverseClockWise();
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      if (CheckBlockCollision(block, i, j, 0, 0)) {
+        block->BlockTurnClockWise();
+        BlockPrintGuide(block);
+        block->BlockPrint(cur_y, cur_x);
+        return;
+      }
     }
-    return false;
   }
-  start = clock();
-  return false;
+  BlockPrintGuide(block);
+  block->BlockPrint(cur_y, cur_x);
 }
-
-void TetrisGame::BlockTurnLeft(TetrisBlock *&block) {}
-void TetrisGame::BlockTurnRight(TetrisBlock *&block) {}
+void TetrisGame::BlockTurnRight(TetrisBlock *&block) {
+  BlockEraseGuide(block);
+  block->BlockPrintErase(cur_y, cur_x);
+  block->BlockTurnClockWise();
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      if (CheckBlockCollision(block, i, j, 0, 0)) {
+        block->BlockTurnReverseClockWise();
+        BlockPrintGuide(block);
+        block->BlockPrint(cur_y, cur_x);
+        return;
+      }
+    }
+  }
+  BlockPrintGuide(block);
+  block->BlockPrint(cur_y, cur_x);
+}
 
 void TetrisGame::BlockMoveLeft(TetrisBlock *&block) {
   if (!CheckBlockCollisionLeft(block)) {
@@ -388,12 +406,7 @@ void TetrisGame::BlockEraseGuide(TetrisBlock *&block) {
   block->BlockPrintErase(cur_y, cur_x);
   cur_y = y;
 }
-// x  y
-// 11 11
-// 20 30
 
-// 01 04
-// 10 23
 bool TetrisGame::CheckBlockCollision(TetrisBlock *&block, int y, int x, int a,
                                      int b) {
   if (block->GetBlock(y, x) &&

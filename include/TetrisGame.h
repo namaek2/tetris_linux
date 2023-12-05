@@ -265,7 +265,6 @@ public:
   static bool ArrowEscInput(TetrisBlock *&block);
 
   static void SetWaitTime();
-  static bool CheckWaitTime();
 
   static void BlockTurnLeft(TetrisBlock *&block);
   static void BlockTurnRight(TetrisBlock *&block);
