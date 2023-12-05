@@ -24,10 +24,9 @@ void TetrisBlock::BlockPrint(int y, int x) {
   BlockColor();
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
-      // if (y + i < 11 || x + j < 11 || y + i > 50 || x + j > 30) {
-      //   continue;
-      // }
-      if (block[i][j]) { // 블록이 있어야 할 공간이면 출력
+      if (y + i < 11 && x + j > 10 && x + j < 31) {
+        continue;
+      } else if (block[i][j]) { // 블록이 있어야 할 공간이면 출력
         TetrisInput::gotoxy(x + j, y + i);
         cout << "▣";
       }
@@ -37,7 +36,7 @@ void TetrisBlock::BlockPrint(int y, int x) {
 }
 
 void TetrisBlock::BlockPrintGuide(int y, int x) {
-  cout << BLACK;
+  cout << WHITE;
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (block[i][j]) { // 블록이 있어야 할 공간이면 출력

@@ -59,6 +59,11 @@ void TetrisGame::GameMain() {
     if (CheckGameOver()) {
       return;
     }
+
+    TetrisInterface::EraseQueBlocks(que_blocks);
+    active_block = que_blocks[0]->Clone();
+    PushQueBlock();
+    TetrisInterface::DrawQueBlocks(que_blocks);
   }
 }
 
@@ -89,7 +94,7 @@ void TetrisGame::DrawGameStage() {
   for (int y = 4; y < 24; y++) {
     TetrisInput::gotoxy(LEFT_BORDER + 1, TOP_BORDER - 3 + y);
     for (int x = 1; x < 11; x++) {
-      if (GetGameStage(y, x) == LINE) {
+      if (GetGameStage(y, x) == EMPTY) {
         cout << " ";
       } else if (GetGameStage(y, x) == I) {
         cout << CYAN;
@@ -187,8 +192,7 @@ void TetrisGame::FixGameStage(TetrisBlock *&block) {
   for (int y = 0; y < 4; y++) {
     for (int x = 0; x < 4; x++) {
       if (block->GetBlock(y, x)) {
-        SetGameStage(cur_y - START_Y + y, cur_x - START_X + 4 + x,
-                     block->color_code);
+        SetGameStage(cur_y - START_Y + y, cur_x - 10 + x, block->color_code);
       }
     }
   }
@@ -247,7 +251,7 @@ bool TetrisGame::KeyBoardInput(TetrisBlock *&block) {
   switch (input) {
   case SPACE: { // space
     BlockHardDrop(block);
-    break;
+    return false;
   }
   case 83: { // S
     BlockTurnLeft(block);
@@ -298,13 +302,14 @@ bool TetrisGame::ArrowEscInput(TetrisBlock *&block) {
 }
 
 void TetrisGame::SetWaitTime() {
-  start = NULL; // 카운트 초기화
-  end_t = NULL;
+  start = 0; // 카운트 초기화
+  end_t = 0;
+  duration = 0;
   time_passed = 0;
 }
 
 bool TetrisGame::CheckWaitTime() {
-  if (start != NULL) {
+  if (start != 0) {
     end_t = clock();
     duration = (float)(end_t - start); // 카운트 계산
 
@@ -340,14 +345,14 @@ void TetrisGame::BlockMoveRight(TetrisBlock *&block) {
   }
 }
 
-bool TetrisGame::BlockMoveDown(TetrisBlock *&block) { // 좌로 이동
-  if (!CheckBlockCollisionDown(block)) {              // 간섭 없을 시
+bool TetrisGame::BlockMoveDown(TetrisBlock *&block) {
+  if (!CheckBlockCollisionDown(block)) {
     BlockEraseGuide(block);
-    block->BlockPrintErase(cur_y, cur_x); // 현재 블록 지우기
-    cur_y += 1;                           // 좌표 이동
+    block->BlockPrintErase(cur_y, cur_x);
+    cur_y += 1;
 
-    BlockPrintGuide(block);          // 가이드 블록 출력
-    block->BlockPrint(cur_y, cur_x); // 블록 출력
+    BlockPrintGuide(block);
+    block->BlockPrint(cur_y, cur_x);
     SetWaitTime();
     return true;
   }
@@ -361,7 +366,6 @@ void TetrisGame::BlockHardDrop(TetrisBlock *&block) {
   while (!CheckBlockCollisionDown(block)) {
     cur_y++;
   }
-
   block->BlockPrint(cur_y, cur_x);
 }
 
@@ -402,7 +406,7 @@ bool TetrisGame::CheckBlockCollision(TetrisBlock *&block, int y, int x, int a,
 bool TetrisGame::CheckBlockCollisionLeft(TetrisBlock *&block) {
   for (int x = 0; x < 4; x++) {
     for (int y = 3; y >= 0; y--) {
-      if (CheckBlockCollision(block, y, x, 0, -11)) {
+      if (CheckBlockCollision(block, y, x, 0, -1)) {
         return true;
       }
     }
@@ -441,16 +445,21 @@ void TetrisGame::BlockMoveSession(TetrisBlock *&block) const {
   cur_x = START_X;
 
   // guide(); // 가이드 블록 출력
+  SetWaitTime();
 
   while (true) {
     for (time_passed = 0; time_passed < game_level * 4; time_passed++) {
-      if (start != NULL) {
+      TetrisInterface::DrawGameTopBar();
+      if (start != 0) {
         end_t = clock();
         duration = (float)(end_t - start);
 
         if (duration >= 1000) { // 1초 이상 경과시
+          duration = 0;
           return;
         }
+
+        duration = 0;
       }
 
       if (TetrisInput::_kbhit()) { // 키보드 입력이 있다면
@@ -459,14 +468,13 @@ void TetrisGame::BlockMoveSession(TetrisBlock *&block) const {
         }
       }
 
-      usleep(5000);
+      usleep(10000);
     }
 
     if (!BlockMoveDown(block)) {
-      if (CheckWaitTime()) {
-        return;
+      if (start == 0) {
+        start = clock();
       }
     }
-    TetrisInterface::DrawGameTopBar();
   }
 }

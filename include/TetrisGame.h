@@ -47,8 +47,8 @@
 static int cur_y = 0;
 static int cur_x = 0;
 static int game_stage[25][12] = {0};
-static clock_t start = NULL;
-static clock_t end_t = NULL;
+static clock_t start = 0;
+static clock_t end_t = 0;
 static float duration = 0;
 static int time_passed = 0;
 using namespace std;
@@ -227,6 +227,7 @@ public:
   static void GameBorder();
   static void GameOver();
   static void DrawQueBlocks(TetrisBlock **que_blocks);
+  static void EraseQueBlocks(TetrisBlock **que_blocks);
   static void DrawQueBoxBorder();
   static void DrawGameTopBar();
 };
