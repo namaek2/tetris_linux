@@ -10,7 +10,7 @@
 
 namespace Color {
 
-enum Code {
+enum ColorCode {
   FG_RED = 31,
   FG_GREEN = 32,
   FG_YELLOW = 33,
@@ -20,14 +20,13 @@ enum Code {
   FG_WHITE = 37,
   FG_BLACK = 30,
   FG_ORANGE = 33,
-
 };
 
 class Modifier {
-  Code code;
+  ColorCode code;
 
 public:
-  Modifier(Code pCode) : code(pCode) {}
+  Modifier(ColorCode pCode) : code(pCode) {}
   friend std::ostream &operator<<(std::ostream &os, const Modifier &mod) {
     if (mod.code == FG_BLACK || mod.code == FG_ORANGE) {
       return os << "\033[1m\033[" << mod.code << "m";

@@ -24,9 +24,10 @@ private:
 public:
   // void init_keyboard();
   // void close_keyboard();
+  // int _putch(int c);
+  
   static int _kbhit();
   static int _getch();
-  // int _putch(int c);
   static void gotoxy(int x, int y);
 };
 

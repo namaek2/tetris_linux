@@ -23,6 +23,7 @@ int TetrisInput::_putch(int c) {
 }
 
 */
+
 int TetrisInput::_kbhit() {
   unsigned char ch;
   int nread;

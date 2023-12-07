@@ -1,27 +1,30 @@
 //
-// Created by namaek_2 on 11/21/23.
+// Created by namaek_2 on Nov/21/23.
 //
 
 #include "../include/TetrisGame.h"
 
+// 메뉴 선택 화면
 TetrisStart::TetrisStart() {
   system("clear");
   SetCursorY(20);
   SetMenuSelected(0);
   hide();
+
   PrintTitle();
   PrintMenu();
   SelectMenu();
 }
 
-int TetrisStart::GetEnum(int level_type) {
-  if (level_type == BEGINNER) {
+// 메뉴 텍스트
+int TetrisStart::GetEnum(int menu_type) {
+  if (menu_type == BEGINNER) {
     cout << "Beginner";
     return 1;
-  } else if (level_type == AMATEUR) {
+  } else if (menu_type == AMATEUR) {
     cout << "Amateur";
     return 2;
-  } else if (level_type == EXPERT) {
+  } else if (menu_type == EXPERT) {
     cout << "Expert";
     return 3;
   }
@@ -29,6 +32,7 @@ int TetrisStart::GetEnum(int level_type) {
   return 4;
 }
 
+// 타이틀 출력
 void TetrisStart::PrintTitle() {
   cout << RED;
   PrintT(39, 6);
@@ -51,6 +55,7 @@ void TetrisStart::PrintTitle() {
   cout << "made by namaek_2";
 }
 
+// 메뉴 출력
 void TetrisStart::PrintMenu() {
   TetrisInput::gotoxy(74, 20);
   GetEnum(BEGINNER);
@@ -64,6 +69,7 @@ void TetrisStart::PrintMenu() {
   cout << ">>\n";
 }
 
+// 메뉴 선택
 void TetrisStart::SelectMenu() {
   int num = 0;
   while (true) {
@@ -88,6 +94,7 @@ void TetrisStart::SelectMenu() {
   }
 }
 
+// 키보드 입력 세션
 void TetrisStart::Session() {
   if (TetrisInput::_kbhit()) {
     int input = TetrisInput::_getch();
@@ -103,10 +110,11 @@ void TetrisStart::Session() {
     }
     }
   }
-  
+
   usleep(1000);
 }
 
+// 메뉴 선택 커서 이동
 void TetrisStart::CursorMove(int dirrection, int y) {
 
   if (dirrection != 91) {
@@ -131,7 +139,7 @@ void TetrisStart::CursorMove(int dirrection, int y) {
   }
 }
 
-// 선택시 반짝거림
+// 선택시 텍스트 반짝거리고, 선택된 메뉴 반환
 void TetrisStart::MenuSelected(int y) {
   for (int i = 0; i < 5; i++) {
     TetrisInput::gotoxy(74, y);
@@ -145,8 +153,8 @@ void TetrisStart::MenuSelected(int y) {
   SetMenuSelected(GetEnum(y));
 }
 
-void TetrisStart::PrintT(int x, int y) // T 출력
-{
+// T 출력
+void TetrisStart::PrintT(int x, int y) {
   TetrisInput::gotoxy(x, y);
   cout << "▣▣▣▣▣▣▣▣";
   TetrisInput::gotoxy(x, y + 1);
@@ -163,8 +171,8 @@ void TetrisStart::PrintT(int x, int y) // T 출력
   cout << "   ▣▣   ";
 }
 
-void TetrisStart::PrintE(int x, int y) // E 출력
-{
+// E 출력
+void TetrisStart::PrintE(int x, int y) {
   TetrisInput::gotoxy(x, y);
   cout << "▣▣▣▣▣▣▣▣";
   TetrisInput::gotoxy(x, y + 1);
@@ -181,8 +189,8 @@ void TetrisStart::PrintE(int x, int y) // E 출력
   cout << "▣▣▣▣▣▣▣▣";
 }
 
-void TetrisStart::PrintR(int x, int y) // R 출력
-{
+// R 출력
+void TetrisStart::PrintR(int x, int y) {
   TetrisInput::gotoxy(x, y);
   cout << "▣▣▣▣▣▣▣ ";
   TetrisInput::gotoxy(x, y + 1);
@@ -199,8 +207,8 @@ void TetrisStart::PrintR(int x, int y) // R 출력
   cout << "▣▣    ▣▣";
 }
 
-void TetrisStart::PrintI(int x, int y) // I 출력
-{
+// I 출력
+void TetrisStart::PrintI(int x, int y) {
   TetrisInput::gotoxy(x, y);
   cout << "▣▣▣▣▣▣▣▣";
   TetrisInput::gotoxy(x, y + 1);
@@ -217,8 +225,8 @@ void TetrisStart::PrintI(int x, int y) // I 출력
   cout << "▣▣▣▣▣▣▣▣";
 }
 
-void TetrisStart::PrintS(int x, int y) // S 출력
-{
+// S 출력
+void TetrisStart::PrintS(int x, int y) {
   TetrisInput::gotoxy(x, y);
   cout << " ▣▣▣▣▣▣▣";
   TetrisInput::gotoxy(x, y + 1);
@@ -235,10 +243,14 @@ void TetrisStart::PrintS(int x, int y) // S 출력
   cout << "▣▣▣▣▣▣▣ ";
 }
 
-int TetrisStart::GetCursorY() { return cursor_y; }
+// 커서 Y 좌표 반환
+int TetrisStart::GetCursorY() const { return cursor_y; }
 
+// 커서 Y 좌표 설정
 void TetrisStart::SetCursorY(int y) { cursor_y = y; }
 
-int TetrisStart::GetMenuSelected() { return menu_selected; }
+// 선택된 메뉴 반환
+int TetrisStart::GetMenuSelected() const { return menu_selected; }
 
+// 선택 메뉴 설정
 void TetrisStart::SetMenuSelected(int m) { menu_selected = m; }

@@ -3,17 +3,15 @@
 //
 #include "../include/TetrisGame.h"
 
+// 화면 테두리 그리기
 void TetrisInterface::ScreenBorder() {
   system("clear");
 
-  // 첫 줄에 세로좌표 끝까지 그리기
   TetrisInput::gotoxy(0, 0);
   for (int i = 0; i < 80; i++) {
     cout << "◈";
   }
 
-  // 두 번째 줄 부터 마지막에서 두 번째 줄 까지는
-  // 가장 왼쪽과 가장 오른쪽에만 그리기
   for (int i = 0; i < 39; i++) {
     TetrisInput::gotoxy(0, i);
     cout << "◈";
@@ -21,15 +19,14 @@ void TetrisInterface::ScreenBorder() {
     cout << "◈";
   }
 
-  // 마지막 줄의 세로좌표 끝까지 그리기
-  TetrisInput::gotoxy(0, 39); // 마지막 줄로 이동
+  TetrisInput::gotoxy(0, 39);
   for (int i = 0; i < 80; i++) {
     cout << "◈";
   }
 }
 
+// 게임 창 그리기
 void TetrisInterface::GameBorder() {
-  // 세로줄 출력
   for (int i = 1; i < BOTTOM_BORDER - TOP_BORDER; i++) {
     TetrisInput::gotoxy(LEFT_BORDER, i + TOP_BORDER);
     cout << "◈";
@@ -37,20 +34,22 @@ void TetrisInterface::GameBorder() {
     cout << "◈";
   }
 
-  // 맨 밑 가로줄 출력
   TetrisInput::gotoxy(LEFT_BORDER, BOTTOM_BORDER);
   for (int i = 1; i < RIGHT_BORDER - LEFT_BORDER + 2; i++) {
     cout << "◈";
   }
 }
 
+// 대기열 블록들 그리기
 void TetrisInterface::DrawQueBlocks(TetrisBlock **que_blocks) {
   for (int i = 0; i < QUE_BLOCK_COUNT; i++) {
+    que_blocks[i]->BlockColor();
     que_blocks[i]->BlockPrint(QUE_TOP_BORDER + 2 + i * (QUE_BOX_SIZE + 1),
                               QUE_LEFT_BORDER + 2);
   }
 }
 
+// 대기열 블록들 지우기
 void TetrisInterface::EraseQueBlocks(TetrisBlock **que_blocks) {
   for (int i = 0; i < QUE_BLOCK_COUNT; i++) {
     que_blocks[i]->BlockPrintErase(QUE_TOP_BORDER + 2 + i * (QUE_BOX_SIZE + 1),
@@ -58,8 +57,7 @@ void TetrisInterface::EraseQueBlocks(TetrisBlock **que_blocks) {
   }
 }
 
-// 대기 블록 인터페이스
-// 가로 8칸
+// 대기 블록 지우기
 void TetrisInterface::DrawQueBoxBorder() {
   TetrisInput::gotoxy(QUE_LEFT_BORDER, QUE_TOP_BORDER);
   cout << WHITE;
@@ -81,6 +79,7 @@ void TetrisInterface::DrawQueBoxBorder() {
   }
 }
 
+// 게임 상단바 그리기
 void TetrisInterface::DrawGameTopBar() {
   for (int i = 0; i < RIGHT_BORDER - LEFT_BORDER + 1; i++) {
     cout << WHITE;
@@ -89,8 +88,9 @@ void TetrisInterface::DrawGameTopBar() {
   }
 }
 
+// 게임 화면 그리기
 void TetrisInterface::GameOver() {
-  system("clear"); // 화면 초기화
+  system("clear");
 
   TetrisInput::gotoxy(56, 6);
   cout << " ▣▣▣▣▣▣      ▣▣▣▣▣▣     ▣▣    ▣▣    ▣▣▣▣▣▣▣▣";
