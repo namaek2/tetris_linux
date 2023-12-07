@@ -23,13 +23,18 @@ TetrisGame::TetrisGame() {
     return;
   }
   game_level = 30 - 9 * s.GetMenuSelected();
-  s.~TetrisStart();
 
   GameInit();
 
   GameMain();
 
   TetrisInterface::GameOver();
+}
+
+TetrisGame::~TetrisGame() {
+  for (int i = 0; i < 5; i++) {
+    delete que_blocks[i];
+  }
 }
 
 // 게임 초기화
@@ -60,6 +65,7 @@ void TetrisGame::GameMain() {
     FixGameStage(active_block);
     CheckLineCompleted();
     if (CheckGameOver()) {
+      delete active_block;
       return;
     }
 
@@ -131,6 +137,7 @@ void TetrisGame::DrawGameStage() {
 // 랜덤으로 블록 생성해 대기열에 넣기
 void TetrisGame::PushQueBlock() {
   for (int i = 0; i < QUE_BLOCK_COUNT - 1; i++) {
+    delete que_blocks[i];
     que_blocks[i] = que_blocks[i + 1]->Clone();
   }
   SetQueBlock(que_blocks[4]);

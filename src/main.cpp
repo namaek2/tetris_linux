@@ -2,7 +2,7 @@
 
 int main(void) {
   TetrisGame tetris_game;
-  tetris_game.~TetrisGame();
+  // tetris_game.~TetrisGame();
 
   return 0;
 }

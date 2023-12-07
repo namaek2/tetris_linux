@@ -292,6 +292,7 @@ private:
 
 public:
   TetrisGame();
+  ~TetrisGame();
 };
 
 #endif // TETRIS_TETRISGAME_H

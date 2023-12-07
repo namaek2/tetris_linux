@@ -188,11 +188,11 @@ TetrisBlockZ::TetrisBlockZ() {
 }
 
 // 블록 소멸자
-TetrisBlock::~TetrisBlock() { delete this; }
-TetrisBlockI::~TetrisBlockI() { delete this; }
-TetrisBlockT::~TetrisBlockT() { delete this; }
-TetrisBlockO::~TetrisBlockO() { delete this; }
-TetrisBlockL::~TetrisBlockL() { delete this; }
-TetrisBlockJ::~TetrisBlockJ() { delete this; }
-TetrisBlockS::~TetrisBlockS() { delete this; }
-TetrisBlockZ::~TetrisBlockZ() { delete this; }
+TetrisBlock::~TetrisBlock() {}
+TetrisBlockI::~TetrisBlockI() {}
+TetrisBlockT::~TetrisBlockT() {}
+TetrisBlockO::~TetrisBlockO() {}
+TetrisBlockL::~TetrisBlockL() {}
+TetrisBlockJ::~TetrisBlockJ() {}
+TetrisBlockS::~TetrisBlockS() {}
+TetrisBlockZ::~TetrisBlockZ() {}
