@@ -22,7 +22,7 @@
 
 ## Class Diagram (UML)
 
-![uml.png](uml.png)
+![uml.jpg](uml.jpg)
 
 ## Used Linux Only Functions
 
