@@ -22,12 +22,12 @@ enum ColorCode {
   FG_ORANGE = 33,
 };
 
-class Modifier {
+class ColorModifier {
   ColorCode code;
 
 public:
-  Modifier(ColorCode pCode) : code(pCode) {}
-  friend std::ostream &operator<<(std::ostream &os, const Modifier &mod) {
+  ColorModifier(ColorCode pCode) : code(pCode) {}
+  friend std::ostream &operator<<(std::ostream &os, const ColorModifier &mod) {
     if (mod.code == FG_BLACK || mod.code == FG_ORANGE) {
       return os << "\033[1m\033[" << mod.code << "m";
     }

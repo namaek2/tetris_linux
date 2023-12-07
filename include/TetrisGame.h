@@ -9,14 +9,14 @@
 #include "TetrisColor.h"
 #include "TetrisInput.h"
 
-#define RED Color::Modifier(Color::FG_RED);
-#define MAGENTA Color::Modifier(Color::FG_MAGENTA);
-#define YELLOW Color::Modifier(Color::FG_YELLOW);
-#define BLUE Color::Modifier(Color::FG_BLUE);
-#define CYAN Color::Modifier(Color::FG_CYAN);
-#define GREEN Color::Modifier(Color::FG_GREEN);
-#define WHITE Color::Modifier(Color::FG_WHITE);
-#define ORANGE Color::Modifier(Color::FG_ORANGE);
+#define RED Color::ColorModifier(Color::FG_RED);
+#define MAGENTA Color::ColorModifier(Color::FG_MAGENTA);
+#define YELLOW Color::ColorModifier(Color::FG_YELLOW);
+#define BLUE Color::ColorModifier(Color::FG_BLUE);
+#define CYAN Color::ColorModifier(Color::FG_CYAN);
+#define GREEN Color::ColorModifier(Color::FG_GREEN);
+#define WHITE Color::ColorModifier(Color::FG_WHITE);
+#define ORANGE Color::ColorModifier(Color::FG_ORANGE);
 
 #define ENTER 13
 #define SPACE 32
